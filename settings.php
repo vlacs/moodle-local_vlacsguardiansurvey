@@ -11,12 +11,18 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    $settings->add(new admin_setting_heading('block_vlacsguardiansurvey', get_string('pluginname', 'block_vlacsguardiansurvey'),
-                       get_string('pluginname', 'block_vlacsguardiansurvey')));
 
-    $settings->add(new admin_setting_configtext('block_vlacsguardiansurvey_name',
-        get_string('courseid', 'block_vlacsguardiansurvey'), get_string('courseid', 'block_vlacsguardiansurvey'),
+    // TODO: Still need to display the page, see example https://github.com/moodlehq/moodle-local_hub/blob/master/settings.php
+
+    $settings = new admin_settingpage('local_vlacsguardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey'));
+
+    $settings->add(new admin_setting_heading('local_vlacsguardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey'),
+                       get_string('pluginname', 'local_vlacsguardiansurvey')));
+
+    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_name',
+        get_string('courseid', 'local_vlacsguardiansurvey'), get_string('courseid', 'local_vlacsguardiansurvey'),
         5, PARAM_INT));
+    $ADMIN->add('localplugins', $settings);
 }
 
 
