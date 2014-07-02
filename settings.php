@@ -1,5 +1,7 @@
 <?php
 
+defined('MOODLE_INTERNAL') || die;
+
 $settings->add(new admin_setting_heading('block_vlacsguardiansurvey', get_string('pluginname', 'block_vlacsguardiansurvey'),
                    get_string('pluginname', 'block_vlacsguardiansurvey')));
 

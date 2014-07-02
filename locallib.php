@@ -1,13 +1,16 @@
 <?php
 
+/**
+ *
+ */
 function sent_guardian_survey_email() {
-    global $USER;
+    global $USER, $DB;
 
     // Check the student guardian.
-    $student2guardian = get_record('student2guardian', 'student_user_idstr', $USER->username);
+    $student2guardian = $DB->get_record('student2guardian', array('student_user_idstr' => $USER->username));
 
     // Check if the student guardian has a exit survey already assigned.
-    $guardiansurvey = get_record('guardiansurvey', 'student2guardian', $student2guardian->id);
+    $guardiansurvey = $DB->get_record('guardiansurvey', array('student2guardian' => $student2guardian->id));
 
     if (empty($guardiansurvey)) {
         // Create a new exit survey if none exit.
