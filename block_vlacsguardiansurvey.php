@@ -1,6 +1,7 @@
 <?php
 
 // FILE TO DELETE
+// SOME OF THE CODE LOGIC MUST BE PORTED INTO VLAREDIECT BLOCK AS A WEBSERVICE CALL
 
 //require_once($CFG->dirroot.'/blocks/vlaredirect/lib.php');
 //require_once($CFG->dirroot.'/blocks/vlacsguardiansurvey/locallib.php');

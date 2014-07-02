@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * The survey questions that need to be added to a survey when a new survey is created.
+ *
+ * @package    local_vlacsguardiansurvey
+ * @copyright  2014 VLA
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Jerome Mouneyrac <jerome@mouneyrac.com>
+ */
+
 $surveydata = array();
 
 $question1 = new stdClass();
