@@ -19,13 +19,13 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('local_vlacsguardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey'),
                        get_string('pluginname', 'local_vlacsguardiansurvey')));
 
-    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_courseid',
-        get_string('courseid', 'local_vlacsguardiansurvey'), get_string('courseidhelp', 'local_vlacsguardiansurvey'),
-        null, PARAM_INT));
-
-    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_surveyid',
-        get_string('surveyid', 'local_vlacsguardiansurvey'), get_string('surveyidhelp', 'local_vlacsguardiansurvey'),
-        null, PARAM_INT));
+//    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_courseid',
+//        get_string('courseid', 'local_vlacsguardiansurvey'), get_string('courseidhelp', 'local_vlacsguardiansurvey'),
+//        null, PARAM_INT));
+//
+//    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_surveyid',
+//        get_string('surveyid', 'local_vlacsguardiansurvey'), get_string('surveyidhelp', 'local_vlacsguardiansurvey'),
+//        null, PARAM_INT));
 
     $ADMIN->add('localplugins', $settings);
 }
