@@ -42,3 +42,31 @@ function ask_guardian_to_answer_exit_survey() {
 
 
 }
+
+/**
+ * Display list of survey that the user need to answer.
+ */
+function display_guardian_surveys() {
+
+}
+
+/**
+ * Display the course name/completed date/student name on the survey by CSS.
+ * Offer a link to pick a different survey.
+ * This is used in case the student access the url and so no guardiansurvey table id where saved into the user session
+ * (or if the wrong id is saved)
+ */
+function display_survey_info() {
+
+}
+
+/**
+ * Saved the survey submission id into the guardiansurvey table  (looking a the guardiansurvey id saved in the session)
+ */
+function survey_is_submitted() {
+
+}
+
+function create_survey_from_surveydata_file() {
+
+}
