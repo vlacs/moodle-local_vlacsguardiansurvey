@@ -11,6 +11,7 @@
         <FIELD NAME="enrolmentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the student enrolment on the remote Moodle site."/>
         <FIELD NAME="enrolmentcompleteddate" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp when the student had his enrolment marked as completed on the remote Moodle site."/>
         <FIELD NAME="guardianid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the guardian who needs to fill up the survey."/>
+        <FIELD NAME="coursename" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the course name of the enrolment."/>
         <FIELD NAME="studentfullname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the student fullname to be displayed - can be retrieve on the remote site by the enrolment id."/>
         <FIELD NAME="completeddate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="timestamp when the survey was completed - when not completed the field is equal to 0."/>
         <FIELD NAME="emailsentdate" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp of the last email sent to the guardian - so the plugin knows if it needs to sent a new email."/>

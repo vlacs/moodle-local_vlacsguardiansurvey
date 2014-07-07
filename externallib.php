@@ -32,13 +32,14 @@ class local_vlacsguardiansurvey_external extends external_api {
         return new external_function_parameters(
             array('enrolmentid' => new external_value(PARAM_INT, 'enrolment id'),
                   'enrolmentcompleteddate' => new external_value(PARAM_INT, 'enrolment completed date'),
-                  'studentfullname' => new external_value(PARAM_INT, 'student fullname'),
-                  'guardianusername' => new external_value(PARAM_INT, 'guardian username'),
-                  'guardianemail' => new external_value(PARAM_INT, 'course id'),
-                  'guardianfirstname' => new external_value(PARAM_INT, 'course id'),
-                  'guardianlastname' => new external_value(PARAM_INT, 'course id'),
-                  'guardiancountry' => new external_value(PARAM_INT, 'course id'),
-                  'guardiancity' => new external_value(PARAM_INT, 'course id'),
+                  'studentfullname' => new external_value(PARAM_TEXT, 'student fullname'),
+                  'coursename' => new external_value(PARAM_TEXT, 'course name'),
+                  'guardianusername' => new external_value(PARAM_USERNAME, 'guardian username'),
+                  'guardianemail' => new external_value(PARAM_EMAIL, 'guardian email'),
+                  'guardianfirstname' => new external_value(PARAM_TEXT, 'guardian first name'),
+                  'guardianlastname' => new external_value(PARAM_TEXT, 'guardian last name'),
+                  'guardiancountry' => new external_value(PARAM_ALPHANUMEXT, 'guardian country'),
+                  'guardiancity' => new external_value(PARAM_TEXT, 'guardian city'),
 
             )
         );
@@ -47,11 +48,21 @@ class local_vlacsguardiansurvey_external extends external_api {
     /**
      * Send an email to the huardian.
      *
-     * @param int $courseid course id
-     * @param array $options These options are not used yet, might be used in later version
-     * @return array
+     * @param $enrolmentid
+     * @param $enrolmentcompleteddate
+     * @param $coursename
+     * @param $studentfullname
+     * @param $guardianusername
+     * @param $guardianemail
+     * @param $guardianfirstname
+     * @param $guardianlastname
+     * @param $guardiancountry
+     * @param $guardiancity
+     * @return stdClass
+     * @throws moodle_exception
      */
-    public static function request_survey_answer($enrolmentid, $enrolmentcompleteddate, $studentfullname,
+    public static function request_survey_answer($enrolmentid, $enrolmentcompleteddate,
+                                                 $coursename, $studentfullname,
             $guardianusername, $guardianemail, $guardianfirstname, $guardianlastname, $guardiancountry, $guardiancity) {
         global $CFG, $DB;
         require_once($CFG->dirroot . "/course/lib.php");
@@ -59,7 +70,7 @@ class local_vlacsguardiansurvey_external extends external_api {
         // Validate parameters.
         $params = self::validate_parameters(self::request_survey_answer_parameters(),
             array('enrolmentid' => $enrolmentid, 'enrolmentcompleteddate' => $enrolmentcompleteddate,
-                'studentfullname' => $studentfullname, 'guardianusername' => $guardianusername
+                'coursename' => $coursename, 'studentfullname' => $studentfullname, 'guardianusername' => $guardianusername
                 'guardianemail' => $guardianemail, 'guardianfirstname' => $guardianfirstname
                 'guardianfirstname' => $guardianfirstname, 'guardianlastname' => $guardianlastname
                 'guardiancountry' => $guardiancountry, 'guardiancity' => $guardiancity));
@@ -88,11 +99,10 @@ class local_vlacsguardiansurvey_external extends external_api {
     /**
      * Returns description of method result value
      *
-     * @return external_description
+     * @return external_single_structure
      */
     public static function request_survey_answer_returns() {
-        return
-            new external_single_structure(
+        return new external_single_structure(
                 array(
                     'success' => new external_value(PARAM_INT, 'success')
                 )
