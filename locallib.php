@@ -29,6 +29,20 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
         // If the guardian user doesn't exist (check the username/email) then we create it on this site.
         // We need username, email, first name, last name, city, country (sent in the ws params)
         // Set the authentication to external database.
+        $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['e'],
+            'email' => $surveyrequestinfo['guardianemail']));
+        if (empty($guardian)) {
+            // create the guardian in the database.
+            $guardian = new stdClass();
+            $guardian->username = $surveyrequestinfo['guardianusername'];
+            $guardian->firstname = $surveyrequestinfo['guardianfirstname'];
+            $guardian->lastname = $surveyrequestinfo['guardianlastname'];
+            $guardian->email = $surveyrequestinfo['guardianemail'];
+            $guardian->country = $surveyrequestinfo['guardiancountry'];
+            $guardian->city = $surveyrequestinfo['guardiancity'];
+            $guardian->auth = 'external';
+            $guardian->id = user_create_user($guardian);
+        }
 
         // Assign the guardian as a course participant.
 

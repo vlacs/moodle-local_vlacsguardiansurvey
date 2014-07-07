@@ -70,9 +70,9 @@ class local_vlacsguardiansurvey_external extends external_api {
         // Validate parameters.
         $params = self::validate_parameters(self::request_survey_answer_parameters(),
             array('enrolmentid' => $enrolmentid, 'enrolmentcompleteddate' => $enrolmentcompleteddate,
-                'coursename' => $coursename, 'studentfullname' => $studentfullname, 'guardianusername' => $guardianusername
-                'guardianemail' => $guardianemail, 'guardianfirstname' => $guardianfirstname
-                'guardianfirstname' => $guardianfirstname, 'guardianlastname' => $guardianlastname
+                'coursename' => $coursename, 'studentfullname' => $studentfullname, 'guardianusername' => $guardianusername,
+                'guardianemail' => $guardianemail, 'guardianfirstname' => $guardianfirstname,
+                'guardianfirstname' => $guardianfirstname, 'guardianlastname' => $guardianlastname,
                 'guardiancountry' => $guardiancountry, 'guardiancity' => $guardiancity));
 
         // now security checks
