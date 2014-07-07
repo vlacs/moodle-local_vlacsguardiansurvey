@@ -24,12 +24,9 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('course');
 $PAGE->set_heading($title);
 
-
-
 $PAGE->set_title($title);
 
 echo $OUTPUT->header();
 echo 'LIST OF SURVEYS';
-create_survey_from_surveydata_file();
 echo $OUTPUT->footer();
 

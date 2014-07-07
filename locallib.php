@@ -18,32 +18,29 @@ require_once($CFG->dirroot . '/local/vlacsguardiansurvey/config.php');
  * have not been sent the last X days...
  * It is most likely that this function is trigger by a web service call from VLA Moodle site.
  */
-function ask_guardian_to_answer_exit_survey() {
+function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     global $USER, $DB;
 
-    // Check the student guardian.
-    $student2guardian = $DB->get_record('student2guardian', array('student_user_idstr' => $USER->username));
 
-    // Check if the student guardian has a exit survey already assigned.
-    $guardiansurvey = $DB->get_record('guardiansurvey', array('student2guardian' => $student2guardian->id));
+    // Check if the guardian has a exit survey already assigned for the enrolment.
+    $guardiansurvey = $DB->get_record('guardiansurvey', array('enrolmentid' => $surveyrequestinfo->enrolmentid));
 
     if (empty($guardiansurvey)) {
-        // Create a new exit survey if none exit.
+        // If the guardian user doesn't exist (check the username/email) then we create it on this site.
+        // We need username, email, first name, last name, city, country (sent in the ws params)
+        // Set the authentication to external database.
 
-            // Retrieve all the feedback module of the course containing the survey
-
-            // If none feedback existing with the name ... then create it
-
-        // Assign the exit survey to the guardian.
+        // Assign the guardian as a course participant.
 
         // Sent email to guardian.
 
-        // Mark the exit survey as sent to the guardian.
+        // Mark the exit survey as sent to the guardian for the specific enrolment.
+        $surveyrequestinfo->emailsentdate = time();
+        $DB->insert_record('guardiansurvey', $surveyrequestinfo);
 
+    } else {
+        // Check if the email need to be resent.
     }
-
-
-
 }
 
 /**
@@ -70,6 +67,10 @@ function survey_is_submitted() {
 
 }
 
+/**
+ * Create the survey from the surveydata file.
+ * mainly called for installation/development/testing.
+ */
 function create_survey_from_surveydata_file() {
     global $CFG, $DB;
 
@@ -107,6 +108,14 @@ function create_survey_from_surveydata_file() {
         require_once($CFG->dirroot . '/local/vlacsguardiansurvey/surveydata.php');
         foreach ($surveydata as $setofquestions) {
             // Display questions break
+            $item = new stdClass();
+            $item->typ = 'label';
+            $item->feedback = $moduleinfo->id;
+            $item->name = $setofquestions->name;
+            $item->presentation = '<p><b>' . $setofquestions->name . '</b></p>';
+            $itemposition = $itemposition + 1;
+            $item->position = $itemposition;
+            $DB->insert_record('feedback_item', $item);
 
             // Display the set of question
             foreach($setofquestions->questions as $question) {
