@@ -141,9 +141,9 @@ $surveydata['cominstructor']->questions = array($question13, $question14, $quest
 $surveydata['cominstructor']->name = 'Communication with Instructor';
 
 $surveydata['helpdesk'] = new stdClass();
-$surveydata['cominstructor']->questions = array($question16, $question17);
-$surveydata['cominstructor']->name = 'Academic help desk';
+$surveydata['helpdesk']->questions = array($question16, $question17);
+$surveydata['helpdesk']->name = 'Academic help desk';
 
 $surveydata['rigor'] = new stdClass();
-$surveydata['cominstructor']->questions = array($question18, $question19, $question20);
-$surveydata['cominstructor']->name = 'Rigor of courses';
+$surveydata['rigor']->questions = array($question18, $question19, $question20);
+$surveydata['rigor']->name = 'Rigor of courses';
