@@ -10,22 +10,22 @@
  * @author Jerome Mouneyrac
  */
 
-require_once('../../../config.php');
+require_once('../../../../config.php');
 
 /// Setup.
 // TOKEN NEED TO BE CHANGED.
-$token = 'acabec9d20933913f14301785324f579';
+$token = '2fe614046b6b294952c2f7f462bcdf12';
 $domainname = $CFG->wwwroot;
 $restformat = 'json';
 
 /// Test data.
-$functionname = 'local_vlacguardiansurvey_request_survey_answer';
+$functionname = 'local_vlacsguardiansurvey_request_survey_answer';
 // PARAMS NEED TO BE CHANGED.
 $params = array('enrolmentid' => 2, 'enrolmentcompleteddate' => time(), 'coursename' => 'Mathematic 101',
                 'studentfullname' => 'Anna Pakin', 'guardianusername' => 'guardianjohndoe',
                 'guardianemail' => 'guardianjohndoe@vlacs.org', 'guardianfirstname' => 'John',
                 'guardianlastname' => 'Doe',
-                'guardiancountry' => 'USA', 'guardiancity' => 'Boston');
+                'guardiancountry' => 'us', 'guardiancity' => 'Boston');
 
 /// The rest call.
 header('Content-Type: text/plain');

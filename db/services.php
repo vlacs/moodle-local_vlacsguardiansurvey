@@ -9,7 +9,6 @@
  */
 
 $functions = array(
-
         'local_vlacsguardiansurvey_request_survey_answer' => array(
                 'classname'   => 'local_vlacsguardiansurvey_external',
                 'methodname'  => 'request_survey_answer',
@@ -17,4 +16,15 @@ $functions = array(
                 'description' => 'Ask the guardian by email to answer the exit survey.',
                 'type'        => 'write'
         )
+);
+
+$services = array(
+    'VLACS Guardian Survey Web Service'  => array(
+        'functions' => array ('local_vlacsguardiansurvey_request_survey_answer'),
+        'enabled' => 1,
+        'restrictedusers' => 0,
+        'shortname' => 'local_vlacsguardiansurvey_service',
+        'downloadfiles' => 0,
+        'uploadfiles' => 0
+    ),
 );

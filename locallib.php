@@ -19,17 +19,18 @@ require_once($CFG->dirroot . '/local/vlacsguardiansurvey/config.php');
  * It is most likely that this function is trigger by a web service call from VLA Moodle site.
  */
 function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
-    global $USER, $DB;
+    global $USER, $DB, $CFG;
 
 
     // Check if the guardian has a exit survey already assigned for the enrolment.
-    $guardiansurvey = $DB->get_record('guardiansurvey', array('enrolmentid' => $surveyrequestinfo->enrolmentid));
+    $guardiansurvey = $DB->get_record('guardiansurvey',
+        array('enrolmentid' => $surveyrequestinfo['enrolmentid']));
 
     if (empty($guardiansurvey)) {
         // If the guardian user doesn't exist (check the username/email) then we create it on this site.
         // We need username, email, first name, last name, city, country (sent in the ws params)
         // Set the authentication to external database.
-        $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['e'],
+        $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername'],
             'email' => $surveyrequestinfo['guardianemail']));
         if (empty($guardian)) {
             // create the guardian in the database.
@@ -41,7 +42,10 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
             $guardian->country = $surveyrequestinfo['guardiancountry'];
             $guardian->city = $surveyrequestinfo['guardiancity'];
             $guardian->auth = 'external';
-            $guardian->id = user_create_user($guardian);
+            require_once($CFG->dirroot . '/user/lib.php');
+            $surveyrequestinfo['guardianid'] = user_create_user($guardian);
+        } else {
+            $surveyrequestinfo['guardianid'] = $guardian->id;
         }
 
         // Assign the guardian as a course participant.
@@ -49,7 +53,7 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
         // Sent email to guardian.
 
         // Mark the exit survey as sent to the guardian for the specific enrolment.
-        $surveyrequestinfo->emailsentdate = time();
+        $surveyrequestinfo['emailsentdate'] = time();
         $DB->insert_record('guardiansurvey', $surveyrequestinfo);
 
     } else {
