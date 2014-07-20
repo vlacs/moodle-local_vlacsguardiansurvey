@@ -9,6 +9,8 @@
  * @author     Jerome Mouneyrac <jerome@mouneyrac.com>
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $surveydata = array();
 
 $question1 = new stdClass();

@@ -21,14 +21,14 @@ $restformat = 'json';
 /// Test data.
 $functionname = 'local_vlacsguardiansurvey_request_survey_answer';
 // PARAMS CAN BE CHANGED BUT ATTRIBUTS KEPT IN THE SAME ORDER!
-$enrolmentid = 3;
+$enrolmentid = 5;
 $params = array('enrolmentid' => $enrolmentid,
                 'enrolmentcompleteddate' => time(),
-                'studentfullname' => 'Anna Pakin'.$enrolmentid,
+                'studentfullname' => 'Anna Pakin',
                 'coursename' => 'Mathematic 101',
-                'guardianusername' => 'guardianjohndoe'.$enrolmentid,
-                'guardianemail' => 'guardianjohndoe'.$enrolmentid.'@vlacs.org',
-                'guardianfirstname' => 'John'.$enrolmentid,
+                'guardianusername' => 'guardianjohndoe',
+                'guardianemail' => 'guardianjohndoe@vlacs.org',
+                'guardianfirstname' => 'John',
                 'guardianlastname' => 'Doe',
                 'guardiancountry' => 'us',
                 'guardiancity' => 'Boston');

@@ -10,6 +10,10 @@
 
 
 $string['pluginname'] = 'VLACS Guardian Survey';
+$string['answer'] = 'Answer';
+$string['answered'] = 'Answered';
+$string['course'] = 'Course';
+$string['coursecompleted'] = 'Course Completed';
 $string['courseid'] = 'Course ID';
 $string['courseidhelp'] = 'Course ID (get it from the url)';
 $string['guardianemailmessagehtml'] = 'You are requested to answer the {$a->surveylink} for {$a->studentfullname}
@@ -20,6 +24,10 @@ $string['guardianemailmessagetext'] = 'You are requested to answer the guardian 
  VLACS CEO.';
 $string['guardianemailsubject'] = 'Answer the guardian survey for {$a->studentfullname} - {$a->coursefullname}';
 $string['guardianemailsurveyname'] = 'VLACS guardian survey';
+$string['nosurveys'] = 'No Guardian Exit survey to answer. Well done!';
+$string['reference'] = 'Reference';
+$string['student'] = 'Student';
+$string['surveyanswered'] = 'Survey answered';
 $string['surveyid'] = 'Survey ID';
 $string['surveyidhelp'] = 'Survey ID (get it from the url)';
 $string['surveylist'] = 'Survey list';

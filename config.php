@@ -1,4 +1,7 @@
 <?php
+
+defined('MOODLE_INTERNAL') || die();
+
 //----------------------- MOST LIKELY NEEDS TO BE MODIFIED -----------------------
 // The course id of the course that needs to contains the survey.
 // If the course id reference an none existing course, then a course will be created. (so behat/phpunit test can be ran)

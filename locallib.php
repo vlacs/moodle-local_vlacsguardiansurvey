@@ -9,6 +9,8 @@
  * @author     Jerome Mouneyrac <jerome@mouneyrac.com>
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 // Load the specific $CFG attribut specific to vlacsguardiansurvey local plugin.
 require_once($CFG->dirroot . '/local/vlacsguardiansurvey/config.php');
 
@@ -47,7 +49,12 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     // Enrol the guardian in the course if he is not already enrolled.
     enrol_guardian($surveyrequestinfo);
 
-    // Check if the guardian has a exit survey already assigned for the enrolment.
+    // Check if the guardian has a exit survey already assigned for the specific enrolment.
+    // Reminder: each guardian must answer the exit survey for each enrolment.
+    //           However in the Moodle site there is only one feedback activity
+    //           for all the exit guardian survey!
+    //           We save each guardian feedback submissions into the guardiansurvey table with the
+    //           help of a Moodle Session variable and the Moodle Event system.
     $guardiansurvey = $DB->get_record('guardiansurvey',
         array('enrolmentid' => $surveyrequestinfo['enrolmentid']));
 
@@ -163,13 +170,6 @@ function send_email_to_guardian($surveyrequestinfo) {
     // Mark the exit survey as sent to the guardian for the specific enrolment.
     $surveyrequestinfo['emailsentdate'] = time();
     $DB->update_record('guardiansurvey', $surveyrequestinfo);
-}
-
-/**
- * Display list of survey that the user need to answer.
- */
-function display_guardian_surveys() {
-
 }
 
 /**

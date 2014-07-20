@@ -26,7 +26,12 @@ $PAGE->set_heading($title);
 
 $PAGE->set_title($title);
 
-echo $OUTPUT->header();
-echo 'LIST OF SURVEYS';
-echo $OUTPUT->footer();
+$output = $PAGE->get_renderer('local_vlacsguardiansurvey');
+// Retrieve the list of the guardian surveys that the guardian need to answer.
+$surveys = $DB->get_records('guardiansurvey', array('guardianid' => $USER->id));
+$surveylist = new survey_guardian_list($surveys);
+
+echo $output->header();
+echo $output->render($surveylist);
+echo $output->footer();
 
