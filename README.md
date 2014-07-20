@@ -1,5 +1,6 @@
 This plugin is used to receive a web service call from VLA Moodle site.
-It creates new Guardian exit survey and request guardian to answer the survey.
+It creates a new Guardian exit survey (in VLACS terms, in reality we are not using a Moodle survey activity but a Moodle feedback activity),
+ and request guardian to answer the survey.
 It also display the list of the guardian surveys.
 
 ### Settings

@@ -50,8 +50,8 @@ class local_vlacsguardiansurvey_external extends external_api {
      *
      * @param $enrolmentid
      * @param $enrolmentcompleteddate
-     * @param $coursename
      * @param $studentfullname
+     * @param $coursename
      * @param $guardianusername
      * @param $guardianemail
      * @param $guardianfirstname
@@ -62,16 +62,18 @@ class local_vlacsguardiansurvey_external extends external_api {
      * @throws moodle_exception
      */
     public static function request_survey_answer($enrolmentid, $enrolmentcompleteddate,
-                                                 $coursename, $studentfullname,
-            $guardianusername, $guardianemail, $guardianfirstname, $guardianlastname, $guardiancountry, $guardiancity) {
+                                                 $studentfullname, $coursename,
+                                                 $guardianusername, $guardianemail,
+                                                 $guardianfirstname, $guardianlastname,
+                                                 $guardiancountry, $guardiancity) {
         global $CFG, $DB;
         require_once($CFG->dirroot . "/course/lib.php");
 
         // Validate parameters.
         $params = self::validate_parameters(self::request_survey_answer_parameters(),
             array('enrolmentid' => $enrolmentid, 'enrolmentcompleteddate' => $enrolmentcompleteddate,
-                'coursename' => $coursename, 'studentfullname' => $studentfullname, 'guardianusername' => $guardianusername,
-                'guardianemail' => $guardianemail, 'guardianfirstname' => $guardianfirstname,
+                'studentfullname' => $studentfullname, 'coursename' => $coursename,
+                'guardianusername' => $guardianusername, 'guardianemail' => $guardianemail,
                 'guardianfirstname' => $guardianfirstname, 'guardianlastname' => $guardianlastname,
                 'guardiancountry' => $guardiancountry, 'guardiancity' => $guardiancity));
 

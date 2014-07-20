@@ -20,12 +20,18 @@ $restformat = 'json';
 
 /// Test data.
 $functionname = 'local_vlacsguardiansurvey_request_survey_answer';
-// PARAMS NEED TO BE CHANGED.
-$params = array('enrolmentid' => 2, 'enrolmentcompleteddate' => time(), 'coursename' => 'Mathematic 101',
-                'studentfullname' => 'Anna Pakin', 'guardianusername' => 'guardianjohndoe',
-                'guardianemail' => 'guardianjohndoe@vlacs.org', 'guardianfirstname' => 'John',
+// PARAMS CAN BE CHANGED BUT ATTRIBUTS KEPT IN THE SAME ORDER!
+$enrolmentid = 3;
+$params = array('enrolmentid' => $enrolmentid,
+                'enrolmentcompleteddate' => time(),
+                'studentfullname' => 'Anna Pakin'.$enrolmentid,
+                'coursename' => 'Mathematic 101',
+                'guardianusername' => 'guardianjohndoe'.$enrolmentid,
+                'guardianemail' => 'guardianjohndoe'.$enrolmentid.'@vlacs.org',
+                'guardianfirstname' => 'John'.$enrolmentid,
                 'guardianlastname' => 'Doe',
-                'guardiancountry' => 'us', 'guardiancity' => 'Boston');
+                'guardiancountry' => 'us',
+                'guardiancity' => 'Boston');
 
 /// The rest call.
 header('Content-Type: text/plain');
