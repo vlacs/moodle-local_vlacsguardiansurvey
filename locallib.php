@@ -98,6 +98,18 @@ function create_survey_from_surveydata_file() {
     if (empty($surveyid)) {
         $course = $DB->get_record('course', array('id' => $CFG->surveycourseid));
 
+        // If course doesn't exist, then ww need to create it (for behat/phpunit tests).
+        if (empty($course)) {
+            require_once($CFG->dirroot . '/course/lib.php');
+            $course = new stdClass();
+            $course->fullname = 'VLA surveys';
+            $course->shortname = 'VLAsurveys';
+            $course->category = 1;
+            $course->format = 'topics';
+            $course->visible = 1;
+            $course = create_course($course);
+        }
+
         // Add the module.
         $moduleinfo = new stdClass();
         $moduleinfo->module = 7;
@@ -111,9 +123,16 @@ function create_survey_from_surveydata_file() {
         $moduleinfo->section = 1;
         $moduleinfo->name = 'Exit Guardian Survey (VLACS)';
         $moduleinfo->description = 'Exit Guardian Survey';
+        $moduleinfo->timeopen = 0;
+        $moduleinfo->timeclose = 0;
         $siteaftersubmit = new moodle_url($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php', array());
         $moduleinfo->site_after_submit = $siteaftersubmit->out();
         $moduleinfo->page_after_submit = 'Thank you';
+        // Hack to bypass draft processing of feedback_add_instance.
+        $moduleinfo->introeditor['itemid'] = false;
+        $moduleinfo->page_after_submit_editor['itemid'] = false;
+        $moduleinfo->page_after_submit_editor['text'] = $moduleinfo->page_after_submit;
+        $moduleinfo->page_after_submit_editor['format'] = FORMAT_HTML;
         require_once($CFG->dirroot . '/course/modlib.php');
         $moduleinfo = add_moduleinfo($moduleinfo, $course, null);
 

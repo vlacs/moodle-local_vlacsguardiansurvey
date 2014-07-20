@@ -14,7 +14,7 @@ require_once('../../../../config.php');
 
 /// Setup.
 // TOKEN NEED TO BE CHANGED.
-$token = '2fe614046b6b294952c2f7f462bcdf12';
+$token = '7cb794c8f5a49a9928723cc70a7f8e9b';
 $domainname = $CFG->wwwroot;
 $restformat = 'json';
 
