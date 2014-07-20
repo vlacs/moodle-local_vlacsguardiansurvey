@@ -120,8 +120,7 @@ function create_survey_from_surveydata_file() {
         // Save the moduleinfo id.
         set_config('feedbackid', $moduleinfo->id, 'local_vlacsguardiansurvey');
 
-        // Add the questions.
-
+        // Add the survey questions.
         $itemposition = 0;
         require_once($CFG->dirroot . '/local/vlacsguardiansurvey/surveydata.php');
         foreach ($surveydata as $setofquestions) {
@@ -137,9 +136,7 @@ function create_survey_from_surveydata_file() {
 
             // Display the set of question
             foreach($setofquestions->questions as $question) {
-
                 $item = new stdClass();
-
                 switch ($question->type) {
                     case 'yesno':
                     case 'list':
@@ -161,7 +158,6 @@ function create_survey_from_surveydata_file() {
                             }
                         }
                         $item->typ = 'multichoice';
-
                         break;
                     case 'text':
                         $item->presentation = '60|5'; // 60 character width, 5 rows.

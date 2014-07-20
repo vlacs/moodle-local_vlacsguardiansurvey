@@ -9,8 +9,4 @@
  */
 
 function xmldb_local_vlacsguardiansurvey_install() {
-    global $CFG;
-
-    require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
-    create_survey_from_surveydata_file();
 }
