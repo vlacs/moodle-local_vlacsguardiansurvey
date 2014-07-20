@@ -10,9 +10,10 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once('locallib.php');
 
 require_login();
+
+require_once('locallib.php');
 
 $url = new moodle_url($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php', array());
 $PAGE->set_url($url);
@@ -28,7 +29,13 @@ $PAGE->set_title($title);
 
 $output = $PAGE->get_renderer('local_vlacsguardiansurvey');
 // Retrieve the list of the guardian surveys that the guardian need to answer.
-$surveys = $DB->get_records('guardiansurvey', array('guardianid' => $USER->id));
+$surveys = $DB->get_records('guardiansurvey', array('guardianid' => 8));
+// Remove obsolete surveys from the list.
+foreach($surveys as $key => $survey) {
+    if ((time() - $survey->enrolmentcompleteddate) > $CFG->obsoleteguardiansurveyperiod) {
+        unset($surveys[$key]);
+    }
+}
 $surveylist = new survey_guardian_list($surveys);
 
 echo $output->header();
