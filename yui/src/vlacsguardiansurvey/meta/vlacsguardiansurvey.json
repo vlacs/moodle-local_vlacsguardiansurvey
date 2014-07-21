@@ -1,0 +1,8 @@
+{
+    "moodle-local_vlacsguardiansurvey-survey": {
+        "requires": [
+            "node",
+            "transition"
+        ]
+    }
+}

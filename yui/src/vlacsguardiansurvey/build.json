@@ -1,0 +1,10 @@
+{
+    "name": "moodle-local_vlacsguardiansurvey-survey",
+    "builds": {
+        "moodle-local_vlacsguardiansurvey-survey": {
+            "jsfiles": [
+                "vlacsguardiansurvey.js"
+            ]
+        }
+    }
+}

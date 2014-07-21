@@ -172,14 +172,56 @@ function send_email_to_guardian($surveyrequestinfo) {
     $DB->update_record('guardiansurvey', $surveyrequestinfo);
 }
 
+function add_guardian_survey_css() {
+    global $PAGE, $USER,  $CFG;
+
+    $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
+    // Only add information if we are not an admin AND we are on the correct guardian survey.
+    if (!is_siteadmin($USER) &&
+        ($PAGE->url->out_omit_querystring() == $CFG->wwwroot . '/mod/feedback/complete.php')
+        && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
+
+        // Require some css to hide the crumbtrail and blocks.
+        $PAGE->requires->css(new moodle_url('/local/vlacsguardiansurvey/style.css'));
+
+        return true;
+    }
+
+    return false;
+}
+
 /**
- * Display the course name/completed date/student name on the survey by CSS.
+ * Add the course name/completed date/student name on the survey by CSS.
  * Offer a link to pick a different survey.
  * This is used in case the student access the url and so no guardiansurvey table id where saved into the user session
  * (or if the wrong id is saved)
  */
-function display_survey_info() {
+function add_guardian_survey_javascript() {
+    global $PAGE, $USER,  $CFG;
 
+    $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
+    // Only add information if we are not an admin AND we are on the correct guardian survey.
+    if (!is_siteadmin($USER) &&
+        ($PAGE->url->out_omit_querystring() == $CFG->wwwroot . '/mod/feedback/complete.php')
+        && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
+
+        // Check if are meant to be on a guardian survey (i.e. the guardian click on a survey in the list),
+        // otherwise redirect to the survey list.
+        $enrolmentid = get_config('local_vlacsguardiansurvey', 'current_survey_for_userid_' . $USER->id);
+        if (empty($enrolmentid) and !is_siteadmin($USER)) {
+            error_log(print_r('VLACSGUARDIANSURVEY plugin: ERROR - WE TRIED TO ADD JS BUT THERE WERE NO ENROLMENT ID', true));
+            $redirecturl = new moodle_url($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
+            redirect($redirecturl);
+        }
+
+        // Check if we are the correct guardian.
+        $guardiansurvey = check_enrolment_guardian($enrolmentid);
+
+        // Add information to page url;
+        $PAGE->requires->yui_module('moodle-local_vlacsguardiansurvey-survey',
+            'M.local_vlacsguardiansurvey.survey.init', array(array('guardiansurvey' => $guardiansurvey)));
+        $PAGE->requires->strings_for_js(array(), 'local_vlacsguardiansurvey');
+    }
 }
 
 /**
@@ -200,15 +242,14 @@ function survey_is_submitted(\mod_feedback\event\response_submitted $event) {
     }
 
     $eventotherdata = $event->other;
-    $instanceid = $eventotherdata['cmid'];
+    $cmid = $eventotherdata['cmid'];
     $submissionid = $event->objectid;
     $surveyid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
     // Only save the submission for the correct feedback activity.
-    if ($instanceid == $surveyid) {
+    if ($cmid == $surveyid) {
         // Retrieve the enrolment id from the session.
         $enrolmentid = get_config('local_vlacsguardiansurvey', 'current_survey_for_userid_' . $USER->id);
         if (empty($enrolmentid)) {
-            set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
             $redirecturl = new moodle_exception($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
             throw new moodle_exception('answeredunknownsurvey', 'local_vlacsguardiansurvey', $redirecturl);
         }

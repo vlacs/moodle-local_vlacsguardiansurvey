@@ -32,6 +32,6 @@ $string['student'] = 'Student';
 $string['surveyanswered'] = 'Survey answered';
 $string['surveyid'] = 'Survey ID';
 $string['surveyidhelp'] = 'Survey ID (get it from the url)';
-$string['surveylist'] = 'Survey list';
+$string['surveylist'] = 'Guardian surveys';
 $string['unallowedtoanswer'] = 'Sorry, you are not allowed to answer this feedback. Click on Continue to go to your survey list.
 Pick the correct survey from the list and answer it again.';
