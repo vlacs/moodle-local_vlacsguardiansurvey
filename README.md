@@ -43,3 +43,6 @@ Just before the ```</BODY>``` tag:
 ```
 <?php add_guardian_survey_javascript(); ?>
 ```
+
+### Specification
+See the [specifications in the wiki](https://github.com/Bepaw/moodle-local_vlacsguardiansurvey/wiki/Specifications).
