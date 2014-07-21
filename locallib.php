@@ -183,10 +183,88 @@ function display_survey_info() {
 }
 
 /**
- * Saved the survey submission id into the guardiansurvey table  (looking a the guardiansurvey id saved in the session)
+ * Saved the survey submission id into the guardiansurvey table  (looking a the guardiansurvey id saved in the session).
+ *
+ * @param \mod_feedback\event\response_submitted $event
+ * @throws moodle_exception
+ * @throws coding_exception
  */
-function survey_is_submitted() {
+function survey_is_submitted(\mod_feedback\event\response_submitted $event) {
+    global $USER, $DB, $CFG;
 
+    // Check if it's the correct user.
+    $userid = $event->userid;
+    if ($userid != $USER->id) {
+        set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
+        throw new coding_exception('something going wrong with the feedback event system in survey_is_submitted()');
+    }
+
+    $eventotherdata = $event->other;
+    $instanceid = $eventotherdata['cmid'];
+    $submissionid = $event->objectid;
+    $surveyid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
+    // Only save the submission for the correct feedback activity.
+    if ($instanceid == $surveyid) {
+        // Retrieve the enrolment id from the session.
+        $enrolmentid = get_config('local_vlacsguardiansurvey', 'current_survey_for_userid_' . $USER->id);
+        if (empty($enrolmentid)) {
+            set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
+            $redirecturl = new moodle_exception($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
+            throw new moodle_exception('answeredunknownsurvey', 'local_vlacsguardiansurvey', $redirecturl);
+        }
+
+        // Check if the user is the guardian and can be redirected to the survey.
+        $guardiansurvey = check_enrolment_guardian($enrolmentid);
+
+        // Mark the survey as answered.
+        $guardiansurvey->completeddate = time();
+        $guardiansurvey->submissionid = $submissionid;
+        $DB->update_record('guardiansurvey', $guardiansurvey);
+
+        // Unset the current survey for the guardian.
+        set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
+    }
+}
+
+/**
+ * Check the USER is the rightfull guardian of an enrolment and return the guardiansurvey row.
+ *
+ * @param $enrolmentid
+ * @return object the guardiansurvey row
+ * @throws moodle_exception
+ */
+function check_enrolment_guardian($enrolmentid) {
+    global $DB, $CFG, $USER;
+
+    // Check if the user is the guardian and can be redirected to the survey.
+    $guardiansurvey = $DB->get_record('guardiansurvey', array('enrolmentid' => $enrolmentid));
+    // Check that the $USER is the guardian, otherwise it could be an hack attempt.
+    if ($guardiansurvey->guardianid != $USER->id) {
+        set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
+        $redirecturl = new moodle_exception($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
+        throw new moodle_exception('unallowedtoanswer', 'local_vlacsguardiansurvey', $redirecturl);
+    }
+
+    return $guardiansurvey;
+}
+
+/**
+ * @param $enrolmentid
+ */
+function redirect_to_survey($enrolmentid) {
+    global $USER, $DB, $CFG;
+
+    // Check if the user is the guardian and can be redirected to the survey.
+    check_enrolment_guardian($enrolmentid);
+
+    // Save the enrolment id into a config.
+    set_config('current_survey_for_userid_' . $USER->id, $enrolmentid, 'local_vlacsguardiansurvey');
+
+    // Redirect to the feedback.
+    $surveyid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
+    $redirecturl = new moodle_url($CFG->wwwroot . '/mod/feedback/complete.php', array('id' => $surveyid,
+    'gopage' => 0));
+    redirect($redirecturl);
 }
 
 /**
@@ -197,7 +275,7 @@ function create_survey_from_surveydata_file() {
     global $CFG, $DB;
 
     // Check if the survey is not already created.
-    $surveyid = get_config('local_vlacsguardiansurvey', 'feedbackid');
+    $surveyid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
     $surveycourseid = get_config('local_vlacsguardiansurvey', 'courseid');
 
     if (empty($surveyid)) {
@@ -244,7 +322,7 @@ function create_survey_from_surveydata_file() {
         $moduleinfo = add_moduleinfo($moduleinfo, $course, null);
 
         // Save the moduleinfo id.
-        set_config('feedbackid', $moduleinfo->id, 'local_vlacsguardiansurvey');
+        set_config('feedbackcmid', $moduleinfo->coursemodule, 'local_vlacsguardiansurvey');
 
         // Add the survey questions to the feedback activity.
         $itemposition = 0;

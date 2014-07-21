@@ -3,6 +3,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 //----------------------- MOST LIKELY NEEDS TO BE MODIFIED -----------------------
+// TODO make an admin plugin setting for the following obsolete period.
 $CFG->obsoleteguardiansurveyperiod = 60 * 60 * 24 * 92; // 92 days old surveys.
 // The course id of the course that needs to contains the survey.
 // If the course id reference an none existing course, then a course will be created. (so behat/phpunit test can be ran)
@@ -17,7 +18,7 @@ $CFG->surveyguardianrole = 'student';
 
 // Uncomment to create a new survey feedback activity (the existing one is kept).
 // You'll probably need to change the course shortname in create_survey_from_surveydata_file()
-//set_config('feedbackid', null, 'local_vlacsguardiansurvey');
+//set_config('feedbackcmid', null, 'local_vlacsguardiansurvey');
 
 
 // ------------------------ DON'T CHANGE -----------------------

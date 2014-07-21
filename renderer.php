@@ -47,10 +47,10 @@ class local_vlacsguardiansurvey_renderer extends plugin_renderer_base {
                 } else {
                     $surveyredirecturl = $CFG->wwwroot . '/local/vlacsguardiansurvey/index.php';
                     $answered = html_writer::link(new moodle_url($surveyredirecturl,
-                        array('redirect' => $survey->id)), $stranswer);
+                        array('redirect' => $survey->enrolmentid)), $stranswer);
                 }
                 $surveyrow = array();
-                $surveyrow[] = $survey->id;
+                $surveyrow[] = $survey->enrolmentid;
                 $surveyrow[] = $survey->studentfullname;
                 $surveyrow[] = $survey->coursename;
                 $surveyrow[] = userdate($survey->enrolmentcompleteddate);

@@ -12,6 +12,8 @@
 $string['pluginname'] = 'VLACS Guardian Survey';
 $string['answer'] = 'Answer';
 $string['answered'] = 'Answered';
+$string['answeredunknownsurvey'] = 'Sorry, an unexpected error happened. Click on Continue to go to your survey list.
+Pick the correct survey from the list and answer it again.';
 $string['course'] = 'Course';
 $string['coursecompleted'] = 'Course Completed';
 $string['courseid'] = 'Course ID';
@@ -31,3 +33,5 @@ $string['surveyanswered'] = 'Survey answered';
 $string['surveyid'] = 'Survey ID';
 $string['surveyidhelp'] = 'Survey ID (get it from the url)';
 $string['surveylist'] = 'Survey list';
+$string['unallowedtoanswer'] = 'Sorry, you are not allowed to answer this feedback. Click on Continue to go to your survey list.
+Pick the correct survey from the list and answer it again.';
