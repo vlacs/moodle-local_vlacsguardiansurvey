@@ -9,7 +9,10 @@ SURVEY.prototype = {
     initializer: function() {
         // Add the information about the survey.
         guardiansurvey = this.get('guardiansurvey');
-        Y.one('#region-main > div > h2').append('<br/>For '+ guardiansurvey.studentfullname + ' - ' + guardiansurvey.coursename);
+        var enrolmentinfo = '<h3>For '+ guardiansurvey.studentfullname + ' - ' + guardiansurvey.coursename + '</h3>';
+        var changesurvey = '<div class="changesurvey"><a href="' + M.cfg.wwwroot +
+            '/local/vlacsguardiansurvey/index.php">Select a different course/student survey</a></div>';
+        Y.one('#region-main > div > h2').insert(enrolmentinfo + changesurvey, 'after');
     }
 };
 
