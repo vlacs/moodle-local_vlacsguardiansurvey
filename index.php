@@ -22,7 +22,7 @@ require_login();
 
 $redirect = optional_param('redirect', null, PARAM_INT);
 if (!empty($redirect)) {
-    redirect_to_survey($redirect);
+    vlags_redirect_to_survey($redirect);
     die();
 }
 

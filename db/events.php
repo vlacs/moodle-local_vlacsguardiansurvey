@@ -14,7 +14,7 @@ $observers = array(
     // Survey response submitted.
     array(
         'eventname' => '\mod_feedback\event\response_submitted',
-        'callback' => 'survey_is_submitted',
+        'callback' => 'vlags_survey_is_submitted',
         'includefile' => '/local/vlacsguardiansurvey/locallib.php'
     )
 );

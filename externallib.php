@@ -90,7 +90,7 @@ class local_vlacsguardiansurvey_external extends external_api {
         $canrequestguardian = has_capability('local/vlacsguardiansurvey:request', $context);
 
         require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
-        ask_guardian_to_answer_exit_survey($params);
+        vlags_ask_guardian_to_answer_exit_survey($params);
 
         // TODO
         $result = new stdClass();

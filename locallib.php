@@ -20,7 +20,7 @@ require_once($CFG->dirroot . '/local/vlacsguardiansurvey/config.php');
  * have not been sent the last X days...
  * It is most likely that this function is trigger by a web service call from VLA Moodle site.
  */
-function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
+function vlags_ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     global $DB, $CFG;
 
     // If the guardian user doesn't exist (check the username/email) then we create it on this site.
@@ -47,7 +47,7 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     }
 
     // Enrol the guardian in the course if he is not already enrolled.
-    enrol_guardian($surveyrequestinfo);
+    vlags_enrol_guardian($surveyrequestinfo);
 
     // Check if the guardian has a exit survey already assigned for the specific enrolment.
     // Reminder: each guardian must answer the exit survey for each enrolment.
@@ -63,13 +63,13 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
         $surveyrequestinfo['id'] = $DB->insert_record('guardiansurvey', $surveyrequestinfo);
 
         // Sent email to guardian.
-        send_email_to_guardian($surveyrequestinfo);
+        vlags_send_email_to_guardian($surveyrequestinfo);
 
     } else {
         // If the email has been sent more than 30 days (2592000 seconds) ago resend it.
         if ((time() - $guardiansurvey->emailsentdate) > 2592000) {
                 $surveyrequestinfo['id'] = $guardiansurvey->id;
-                send_email_to_guardian($surveyrequestinfo);
+                vlags_send_email_to_guardian($surveyrequestinfo);
         }
     }
 }
@@ -80,7 +80,7 @@ function ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
  * @param $surveyrequestinfo
  * @throws moodle_exception
  */
-function enrol_guardian($surveyrequestinfo){
+function vlags_enrol_guardian($surveyrequestinfo){
     global $CFG, $DB;
 
     $surveycourseid = get_config('local_vlacsguardiansurvey', 'courseid');
@@ -139,7 +139,7 @@ function enrol_guardian($surveyrequestinfo){
  *
  * @param $surveyrequestinfo
  */
-function send_email_to_guardian($surveyrequestinfo) {
+function vlags_send_email_to_guardian($surveyrequestinfo) {
     global $CFG, $DB;
 
     $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername'],
@@ -172,19 +172,32 @@ function send_email_to_guardian($surveyrequestinfo) {
     $DB->update_record('guardiansurvey', $surveyrequestinfo);
 }
 
-function add_guardian_survey_css() {
+function vlags_add_guardian_survey_css() {
     global $PAGE, $USER,  $CFG;
 
     $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
     // Only add information if we are not an admin AND we are on the correct guardian survey.
-    if (!is_siteadmin($USER) &&
-        ($PAGE->url->out_omit_querystring() == $CFG->wwwroot . '/mod/feedback/complete.php')
-        && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
 
-        // Require some css to hide the crumbtrail and blocks.
-        $PAGE->requires->css(new moodle_url('/local/vlacsguardiansurvey/style.css'));
+    if (!is_siteadmin($USER)) {
+        $sitefileurl = $PAGE->url->out_omit_querystring();
+        if (($sitefileurl == $CFG->wwwroot . '/mod/feedback/complete.php')
+            && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
 
-        return true;
+            // Require some css to hide the crumbtrail and blocks.
+            $PAGE->requires->css(new moodle_url('/local/vlacsguardiansurvey/style.css'));
+
+            return true;
+        } else {
+            // Check that the user is either in the feedback module, either in the local plugin.
+            // Otherwise the user is somewhere he should not be.
+            if (isloggedin()) {
+                error_log(print_r($sitefileurl, true));
+                if(strpos($sitefileurl, '/mod/feedback/') === false
+                    && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false) {
+                    redirect($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
+                }
+            }
+        }
     }
 
     return false;
@@ -196,7 +209,7 @@ function add_guardian_survey_css() {
  * This is used in case the student access the url and so no guardiansurvey table id where saved into the user session
  * (or if the wrong id is saved)
  */
-function add_guardian_survey_javascript() {
+function vlags_add_guardian_survey_javascript() {
     global $PAGE, $USER,  $CFG;
 
     $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
@@ -215,7 +228,7 @@ function add_guardian_survey_javascript() {
         }
 
         // Check if we are the correct guardian.
-        $guardiansurvey = check_enrolment_guardian($enrolmentid);
+        $guardiansurvey = vlags_check_enrolment_guardian($enrolmentid);
 
         // Add information to page url;
         $PAGE->requires->yui_module('moodle-local_vlacsguardiansurvey-survey',
@@ -231,7 +244,7 @@ function add_guardian_survey_javascript() {
  * @throws moodle_exception
  * @throws coding_exception
  */
-function survey_is_submitted(\mod_feedback\event\response_submitted $event) {
+function vlags_survey_is_submitted(\mod_feedback\event\response_submitted $event) {
     global $USER, $DB, $CFG;
 
     // Check if it's the correct user.
@@ -255,7 +268,7 @@ function survey_is_submitted(\mod_feedback\event\response_submitted $event) {
         }
 
         // Check if the user is the guardian and can be redirected to the survey.
-        $guardiansurvey = check_enrolment_guardian($enrolmentid);
+        $guardiansurvey = vlags_check_enrolment_guardian($enrolmentid);
 
         // Mark the survey as answered.
         $guardiansurvey->completeddate = time();
@@ -274,7 +287,7 @@ function survey_is_submitted(\mod_feedback\event\response_submitted $event) {
  * @return object the guardiansurvey row
  * @throws moodle_exception
  */
-function check_enrolment_guardian($enrolmentid) {
+function vlags_check_enrolment_guardian($enrolmentid) {
     global $DB, $CFG, $USER;
 
     // Check if the user is the guardian and can be redirected to the survey.
@@ -292,11 +305,11 @@ function check_enrolment_guardian($enrolmentid) {
 /**
  * @param $enrolmentid
  */
-function redirect_to_survey($enrolmentid) {
+function vlags_redirect_to_survey($enrolmentid) {
     global $USER, $DB, $CFG;
 
     // Check if the user is the guardian and can be redirected to the survey.
-    check_enrolment_guardian($enrolmentid);
+    vlags_check_enrolment_guardian($enrolmentid);
 
     // Save the enrolment id into a config.
     set_config('current_survey_for_userid_' . $USER->id, $enrolmentid, 'local_vlacsguardiansurvey');
@@ -312,7 +325,7 @@ function redirect_to_survey($enrolmentid) {
  * Create the survey from the surveydata file.
  * mainly called for installation/development/testing.
  */
-function create_survey_from_surveydata_file() {
+function vlags_create_survey_from_surveydata_file() {
     global $CFG, $DB;
 
     // Check if the survey is not already created.

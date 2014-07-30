@@ -33,4 +33,4 @@ if (empty($courseid)) {
 // $DB calls can be done during install/upgrade process. This is to prevent bad install/upgrade breaks of Moodle.
 // So we do the plugin data installation after the Moodle plugin upgrade process.
 require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
-create_survey_from_surveydata_file();
+vlags_create_survey_from_surveydata_file();
