@@ -8,15 +8,14 @@ The VLACS survey is using the Moodle Feedback module, not the Moodle Survey modu
 ### Settings
 1. upgrade the survey site to 2.7
 2. enable feedback activity module in Moodle
-3. copy the local plugin on the survey site local folder.
-4. Edit the course id containing the survey in the config.php file of the local plugin.
-5. run the upgrade process. The plugin is installed.
-6. Enable web service in Moodle (enablewebservices) and enable the REST protocol.
-7. Create a token linked to the service. You need to copu this token into the client call in VLACS code (the call should be done when the enrolment is marked as completed)
-8. Set the email feature in the Moodle administration as the site will send emails to the guardians.
-9. You need to edit your theme. See below.
-10. Copy your token into the /test/PHP-REST/client.php. Run it. The guardian survey is automatically created with a guardian test user and a survey request has been sent.
-11. Check all works, you can now delete the test guardian user and the enrolment created in guardiansurvey table.
+3. copy the local plugin on the survey site local folder. 
+4. run the upgrade process. The plugin is installed.
+5. enable web service in Moodle (enablewebservices) and enable the REST protocol.
+6. create a token linked to the service. You need to copu this token into the client call in VLACS code (the call should be done when the enrolment is marked as completed)
+7. set the email feature in the Moodle administration as the site will send emails to the guardians.
+8. you need to edit your theme. See below.
+9. copy your token into the /test/PHP-REST/client.php. Run it. The guardian survey is automatically created with a guardian test user and a survey request has been sent.
+10. check that all works, you can now delete the test guardian user from the Moodle admin and, in the DB, the enrolment created in guardiansurvey table.
 
 
 ### Theme modification
