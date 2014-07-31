@@ -181,7 +181,8 @@ function vlags_add_guardian_survey_css() {
         if (!is_siteadmin($USER)) {
             $sitefileurl = $PAGE->url->out_omit_querystring();
             if(strpos($sitefileurl, '/mod/feedback/') === false
-                && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false) {
+                && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false
+                && strpos($sitefileurl, '/login/') === false) {
                 // Check that the user is either in the feedback module, either in the local plugin.
                 // Otherwise the user is somewhere he should not be.
                 redirect($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
