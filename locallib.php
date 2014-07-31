@@ -175,27 +175,19 @@ function vlags_send_email_to_guardian($surveyrequestinfo) {
 function vlags_add_guardian_survey_css() {
     global $PAGE, $USER,  $CFG;
 
-    $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
-    // Only add information if we are not an admin AND we are on the correct guardian survey.
-
-    if (!is_siteadmin($USER)) {
-        $sitefileurl = $PAGE->url->out_omit_querystring();
-        if (($sitefileurl == $CFG->wwwroot . '/mod/feedback/complete.php')
-            && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
-
-            // Require some css to hide the crumbtrail and blocks.
-            $PAGE->requires->css(new moodle_url('/local/vlacsguardiansurvey/style.css'));
-
-            return true;
-        } else {
-            // Check that the user is either in the feedback module, either in the local plugin.
-            // Otherwise the user is somewhere he should not be.
-            if (isloggedin()) {
-                error_log(print_r($sitefileurl, true));
-                if(strpos($sitefileurl, '/mod/feedback/') === false
-                    && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false) {
-                    redirect($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
-                }
+    // When the user is not logged in, set your Moodle site to force login.
+    if (isloggedin()) {
+        // Only modify the css or redirect if we are not an admin.
+        if (!is_siteadmin($USER)) {
+            $sitefileurl = $PAGE->url->out_omit_querystring();
+            if(strpos($sitefileurl, '/mod/feedback/') === false
+                && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false) {
+                // Check that the user is either in the feedback module, either in the local plugin.
+                // Otherwise the user is somewhere he should not be.
+                redirect($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
+            } else {
+                $PAGE->requires->css(new moodle_url('/local/vlacsguardiansurvey/style.css'));
+                return true;
             }
         }
     }
