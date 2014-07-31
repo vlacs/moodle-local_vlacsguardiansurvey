@@ -38,7 +38,8 @@ $output = $PAGE->get_renderer('local_vlacsguardiansurvey');
 $surveys = $DB->get_records('guardiansurvey', array('guardianid' => $USER->id));
 // Remove obsolete surveys from the list.
 foreach($surveys as $key => $survey) {
-    if ((time() - $survey->enrolmentcompleteddate) > $CFG->obsoleteguardiansurveyperiod) {
+    $obsoleteperiod = 60 * 60 * 24 * get_config('local_vlacsguardiansurvey', 'obsoleteperiod');
+    if ((time() - $survey->enrolmentcompleteddate) > $obsoleteperiod) {
         unset($surveys[$key]);
     }
 }

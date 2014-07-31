@@ -3,8 +3,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 //----------------------- MOST LIKELY NEEDS TO BE MODIFIED -----------------------
-// TODO make an admin plugin setting for the following obsolete period.
-$CFG->obsoleteguardiansurveyperiod = 60 * 60 * 24 * 92; // 92 days old surveys.
+// Survey duration in days from when the enrolment is completed.
+define('VLAGS_OBSOLETEPERIOD', 90);
 // The course id of the course that needs to contains the survey.
 // If the course id reference an none existing course, then a course will be created. (so behat/phpunit test can be ran)
 $surveycourseid = 10;

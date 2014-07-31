@@ -10,24 +10,11 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-if ($ADMIN->fulltree) {
+$ADMIN->add('root', new admin_category('guardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey')));
+$ADMIN->add('guardiansurvey', new admin_externalpage('vlacsguardiansurveysettings',
+    get_string('settings', 'local_vlacsguardiansurvey'),
+    $CFG->wwwroot."/local/vlacsguardiansurvey/admin/settings.php",
+    'moodle/site:config'));
 
-    // TODO: Still need to display the page, see example https://github.com/moodlehq/moodle-local_hub/blob/master/settings.php
-
-    $settings = new admin_settingpage('local_vlacsguardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey'));
-
-    $settings->add(new admin_setting_heading('local_vlacsguardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey'),
-                       get_string('pluginname', 'local_vlacsguardiansurvey')));
-
-//    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_courseid',
-//        get_string('courseid', 'local_vlacsguardiansurvey'), get_string('courseidhelp', 'local_vlacsguardiansurvey'),
-//        null, PARAM_INT));
-//
-//    $settings->add(new admin_setting_configtext('local_vlacsguardiansurvey_surveyid',
-//        get_string('surveyid', 'local_vlacsguardiansurvey'), get_string('surveyidhelp', 'local_vlacsguardiansurvey'),
-//        null, PARAM_INT));
-
-    $ADMIN->add('localplugins', $settings);
-}
 
 
