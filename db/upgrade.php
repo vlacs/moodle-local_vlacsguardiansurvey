@@ -28,8 +28,33 @@ function xmldb_local_vlacsguardiansurvey_upgrade($oldversion) {
         $dbman->change_field_type($table, $field);
 
         // Local savepoint reached.
-        upgrade_plugin_savepoint(true, 2014073101, 'error', 'local');
+        upgrade_plugin_savepoint(true, 2014073101, 'local', 'vlacsguardiansurvey');
     }
+
+    if ($oldversion < 2014073102) {
+
+        // Define field emailsentdate to be dropped from guardiansurvey.
+        $table = new xmldb_table('guardiansurvey');
+        $field = new xmldb_field('firstaccessdate');
+
+        // Conditionally launch drop field emailsentdate.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Define field emailsentdate to be dropped from guardiansurvey.
+        $table = new xmldb_table('guardiansurvey');
+        $field = new xmldb_field('lastaccessdate');
+
+        // Conditionally launch drop field emailsentdate.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Local savepoint reached.
+        upgrade_plugin_savepoint(true, 2014073102, 'local', 'vlacsguardiansurvey');
+    }
+
 
     return true;
 }
