@@ -30,7 +30,7 @@ class local_vlacsguardiansurvey_external extends external_api {
      */
     public static function request_survey_answer_parameters() {
         return new external_function_parameters(
-            array('enrolmentid' => new external_value(PARAM_INT, 'enrolment id'),
+            array('enrolmentid' => new external_value(PARAM_TEXT, 'enrolment id - note that it is a id_str'),
                   'enrolmentcompleteddate' => new external_value(PARAM_INT, 'enrolment completed date'),
                   'studentfullname' => new external_value(PARAM_TEXT, 'student fullname'),
                   'coursename' => new external_value(PARAM_TEXT, 'course name'),

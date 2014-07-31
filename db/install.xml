@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/db" VERSION="20140702" COMMENT="XMLDB file for Moodle local"
+<XMLDB PATH="local/db" VERSION="20140731" COMMENT="XMLDB file for Moodle local"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../lib/xmldb/xmldb.xsd"
 >
@@ -8,7 +8,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="the id of the database row"/>
         <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="the submission of the guarian for this survey"/>
-        <FIELD NAME="enrolmentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the student enrolment on the remote Moodle site."/>
+        <FIELD NAME="enrolmentid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the student enrolment on the remote Moodle site."/>
         <FIELD NAME="enrolmentcompleteddate" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp when the student had his enrolment marked as completed on the remote Moodle site."/>
         <FIELD NAME="guardianid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the guardian who needs to fill up the survey."/>
         <FIELD NAME="coursename" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the course name of the enrolment."/>

@@ -14,14 +14,14 @@ require_once('../../../../config.php');
 
 /// Setup.
 // TOKEN NEED TO BE CHANGED.
-$token = 'f6e744ed0ba9ea22042bb1';
+$token = '7cb794c8f5a49a9928723cc70a7f8e9b';
 $domainname = $CFG->wwwroot;
 $restformat = 'json';
 
 /// Test data.
 $functionname = 'local_vlacsguardiansurvey_request_survey_answer';
 // PARAMS CAN BE CHANGED BUT ATTRIBUTS KEPT IN THE SAME ORDER!
-$enrolmentid = 5;
+$enrolmentid = 'id_str_6';
 $params = array('enrolmentid' => $enrolmentid,
                 'enrolmentcompleteddate' => time(),
                 'studentfullname' => 'Anna Pakin',

@@ -20,7 +20,7 @@ $PAGE->set_url($url);
 
 require_login();
 
-$redirect = optional_param('redirect', null, PARAM_INT);
+$redirect = optional_param('redirect', null, PARAM_TEXT);
 if (!empty($redirect)) {
     vlags_redirect_to_survey($redirect);
     die();

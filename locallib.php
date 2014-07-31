@@ -306,7 +306,7 @@ function vlags_check_enrolment_guardian($enrolmentid) {
  * @param $enrolmentid
  */
 function vlags_redirect_to_survey($enrolmentid) {
-    global $USER, $DB, $CFG;
+    global $USER, $CFG;
 
     // Check if the user is the guardian and can be redirected to the survey.
     vlags_check_enrolment_guardian($enrolmentid);
