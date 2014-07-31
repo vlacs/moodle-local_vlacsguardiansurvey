@@ -178,7 +178,7 @@ function vlags_add_guardian_survey_css() {
     // When the user is not logged in, set your Moodle site to force login.
     if (isloggedin()) {
         // Only modify the css or redirect if we are not an admin.
-        if (!is_siteadmin($USER)) {
+        if (!has_capability('moodle/site:config', context_system::instance())) {
             $sitefileurl = $PAGE->url->out_omit_querystring();
             if(strpos($sitefileurl, '/mod/feedback/') === false
                 && strpos($sitefileurl, '/local/vlacsguardiansurvey/') === false
@@ -207,15 +207,14 @@ function vlags_add_guardian_survey_javascript() {
 
     $feedbackcmid = get_config('local_vlacsguardiansurvey', 'feedbackcmid');
     // Only add information if we are not an admin AND we are on the correct guardian survey.
-    if (!is_siteadmin($USER) &&
+    if (!has_capability('moodle/site:config', context_system::instance()) &&
         ($PAGE->url->out_omit_querystring() == $CFG->wwwroot . '/mod/feedback/complete.php')
         && optional_param('id', 0, PARAM_INT) == $feedbackcmid) {
 
         // Check if are meant to be on a guardian survey (i.e. the guardian click on a survey in the list),
         // otherwise redirect to the survey list.
         $enrolmentid = get_config('local_vlacsguardiansurvey', 'current_survey_for_userid_' . $USER->id);
-        if (empty($enrolmentid) and !is_siteadmin($USER)) {
-            error_log(print_r('VLACSGUARDIANSURVEY plugin: ERROR - WE TRIED TO ADD JS BUT THERE WERE NO ENROLMENT ID', true));
+        if (empty($enrolmentid) and !has_capability('moodle/site:config', context_system::instance())) {
             $redirecturl = new moodle_url($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
             redirect($redirecturl);
         }
