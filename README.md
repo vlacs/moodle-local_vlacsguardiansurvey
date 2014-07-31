@@ -27,7 +27,7 @@ Just before any output, before ```echo $OUTPUT->doctype()```:
 ```
 // These lines are required to add display more information on the feedback survey.
 require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
-if (!add_guardian_survey_css()) {
+if (!vlags_add_guardian_survey_css()) {
     $regionmainclass = 'span8 pull-right';
 } else {
     $regionmainclass = '';
@@ -43,7 +43,7 @@ by
 ```
 Just before the ```</BODY>``` tag:
 ```
-<?php add_guardian_survey_javascript(); ?>
+<?php vlags_add_guardian_survey_javascript(); ?>
 ```
 
 ### Specification
