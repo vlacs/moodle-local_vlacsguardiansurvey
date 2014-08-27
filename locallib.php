@@ -23,12 +23,11 @@ require_once($CFG->dirroot . '/local/vlacsguardiansurvey/config.php');
 function vlags_ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     global $DB, $CFG;
 
-    // If the guardian user doesn't exist (check the username/email) then we create it on this site.
+    // If the guardian user doesn't exist then we create it on this site.
     // We need username, email, first name, last name, city, country (sent in the ws params)
     // Set the authentication to external database.
-    $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername'],
-        'email' => $surveyrequestinfo['guardianemail']));
-    if (empty($guardian)) {
+    $tmp = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername']));
+    if (empty($tmp)) {
         // create the guardian in the database.
         $guardian = new stdClass();
         $guardian->username = $surveyrequestinfo['guardianusername'];
@@ -43,6 +42,13 @@ function vlags_ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
         require_once($CFG->dirroot . '/user/lib.php');
         $surveyrequestinfo['guardianid'] = user_create_user($guardian);
     } else {
+        $guardian = $tmp;
+        $guardian->firstname = $surveyrequestinfo['guardianfirstname'];
+        $guardian->lastname = $surveyrequestinfo['guardianlastname'];
+        $guardian->email = $surveyrequestinfo['guardianemail'];
+        $guardian->country = $surveyrequestinfo['guardiancountry'];
+        $guardian->city = $surveyrequestinfo['guardiancity'];
+        $DB->update_record('user', $guardian);
         $surveyrequestinfo['guardianid'] = $guardian->id;
     }
 
@@ -142,8 +148,7 @@ function vlags_enrol_guardian($surveyrequestinfo){
 function vlags_send_email_to_guardian($surveyrequestinfo) {
     global $CFG, $DB;
 
-    $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername'],
-        'email' => $surveyrequestinfo['guardianemail']));
+    $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername']));
     $userfrom = get_admin();
 
     $strparams = new stdClass();
