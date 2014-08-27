@@ -357,8 +357,8 @@ function vlags_create_survey_from_surveydata_file() {
         $moduleinfo->introeditor['format'] = FORMAT_HTML;
         $moduleinfo->visible = 1;
         $moduleinfo->section = 1;
-        $moduleinfo->name = 'Exit Guardian Survey (VLACS)';
-        $moduleinfo->description = 'Exit Guardian Survey';
+        $moduleinfo->name = 'Exit Parent/Guardian Survey (VLACS)';
+        $moduleinfo->description = 'Exit Parent/Guardian Survey';
         $moduleinfo->timeopen = 0;
         $moduleinfo->timeclose = 0;
         $siteaftersubmit = new moodle_url($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php', array());
