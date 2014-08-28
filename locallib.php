@@ -157,6 +157,7 @@ function vlags_send_email_to_guardian($surveyrequestinfo) {
     $strparams = new stdClass();
     $strparams->studentfullname = $surveyrequestinfo['studentfullname'];
     $strparams->coursefullname = $surveyrequestinfo['coursename'];
+    $strparams->guardianfirstname = $surveyrequestinfo['guardianfirstname'];
     $strparams->surveyurl = $CFG->wwwroot . '/local/vlacsguardiansurvey/index.php';
     $strparams->surveylink = html_writer::link($strparams->surveyurl,
         get_string('guardianemailsurveyname', 'local_vlacsguardiansurvey'));
