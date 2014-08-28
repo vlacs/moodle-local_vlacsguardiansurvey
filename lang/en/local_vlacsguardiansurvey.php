@@ -20,12 +20,16 @@ $string['courseid'] = 'Course ID';
 $string['courseidhelp'] = 'Course ID (get it from the url)';
 $string['dashboard'] = 'Dashboard';
 $string['errorobsoleteperiod'] = 'The obsolete period must be higer than 0.';
-$string['guardianemailmessagehtml'] = 'Please let us know about your experience at VLACS by answering our {$a->surveylink} for {$a->studentfullname},
- who recently completed <strong>{$a->coursefullname}</strong>. <br/><br/>Thank you,<br/>The VLACS Team';
-$string['guardianemailmessagetext'] = 'You are requested to answer the guardian survey ({$a->surveyurl}) for {$a->studentfullname} who completed the course named "{$a->coursefullname}".
+$string['guardianemailmessagehtml'] = 'Please let us know about your experience 
+ at VLACS by answering our {$a->surveylink} for {$a->studentfullname},
+ who recently completed <strong>{$a->coursefullname}</strong>. (You will need 
+your VLACS username and password to access the survey -- please <a 
+href="http://helpdesk.vlacs.org">contact us</a> if you have any questions!) 
+<br/><br/>Thank you,<br/>The VLACS Team';
+$string['guardianemailmessagetext'] = 'Please let us know about your experience at VLACS by answering our Parent/Guardian survey ({$a->surveyurl}) for {$a->studentfullname}, who recently completed "{$a->coursefullname}". (You will need your VLACS username and password to access the survey -- please contact us (http://helpdesk.vlacs.org) if you have any questions!)
 
  Thank you,
- VLACS CEO.';
+ The VLACS Team';
 $string['guardianemailsubject'] = 'Answer the guardian survey for {$a->studentfullname} - {$a->coursefullname}';
 $string['instructor'] = 'Instructor';
 $string['guardianemailsurveyname'] = 'VLACS parent/guardian survey';
