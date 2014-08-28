@@ -62,7 +62,10 @@ function vlags_ask_guardian_to_answer_exit_survey($surveyrequestinfo) {
     //           We save each guardian feedback submissions into the guardiansurvey table with the
     //           help of a Moodle Session variable and the Moodle Event system.
     $guardiansurvey = $DB->get_record('guardiansurvey',
-        array('enrolmentid' => $surveyrequestinfo['enrolmentid']));
+        array(
+            'enrolmentid' => $surveyrequestinfo['enrolmentid'],
+            'guardianid' => $surveyrequestinfo['guardianid']
+        ));
 
     if (empty($guardiansurvey)) {
         // Save the enrolment information into into the guardiansurvey table.
