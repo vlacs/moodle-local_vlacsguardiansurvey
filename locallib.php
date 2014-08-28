@@ -292,9 +292,13 @@ function vlags_check_enrolment_guardian($enrolmentid) {
     global $DB, $CFG, $USER;
 
     // Check if the user is the guardian and can be redirected to the survey.
-    $guardiansurvey = $DB->get_record('guardiansurvey', array('enrolmentid' => $enrolmentid));
+    $guardiansurvey = $DB->get_record('guardiansurvey', 
+        array(
+            'enrolmentid' => $enrolmentid,
+            'guardianid' => $USER->id,
+        ));
     // Check that the $USER is the guardian, otherwise it could be an hack attempt.
-    if ($guardiansurvey->guardianid != $USER->id) {
+    if (empty($guardiansurvey)) {
         set_config('current_survey_for_userid_' . $USER->id, null, 'local_vlacsguardiansurvey');
         $redirecturl = new moodle_exception($CFG->wwwroot . '/local/vlacsguardiansurvey/index.php');
         throw new moodle_exception('unallowedtoanswer', 'local_vlacsguardiansurvey', $redirecturl);
