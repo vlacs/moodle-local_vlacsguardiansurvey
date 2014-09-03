@@ -20,7 +20,7 @@ $question1->comment = 'If you answered \'no\', please explain';
 $question1->type = 'yesno';
 
 $question2 = new stdClass();
-$question2->name = 'I(or another parent/guardian) participated in a monthly voice call
+$question2->name = 'I (or another parent/guardian) participated in a monthly voice call
 with the instructor and my son/daughter to discuss course progress';
 $question2->comment = 'If you answered \'rarely or never\', please explain';
 $question2->type = 'list';
@@ -44,6 +44,7 @@ $question4->type = 'yesno';
 $question5 = new stdClass();
 $question5->name = 'If you communicated with VLACS personnel, please rate your experience.';
 $question5->type = 'list';
+$question5->required = 0;
 $question5->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
 
 $question6 = new stdClass();
@@ -54,6 +55,7 @@ $question6->type = 'yesno';
 $question7 = new stdClass();
 $question7->name = 'If your son/daughter communicated with VLACS personnel, please rate the experience.';
 $question7->type = 'list';
+$question5->required = 0;
 $question7->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
 
 $question8 = new stdClass();
