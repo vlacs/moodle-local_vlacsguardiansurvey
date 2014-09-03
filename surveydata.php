@@ -44,8 +44,7 @@ $question4->type = 'yesno';
 $question5 = new stdClass();
 $question5->name = 'If you communicated with VLACS personnel, please rate your experience.';
 $question5->type = 'list';
-$question5->required = 0;
-$question5->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
+$question5->list = array('I did not communicate with VLACS personnel', 'Excellent', 'Very good', 'Good', 'Fair', 'Poor');
 
 $question6 = new stdClass();
 $question6->name = 'Has your son/daughter communicated with VLACS personnel(counselor,
@@ -55,8 +54,7 @@ $question6->type = 'yesno';
 $question7 = new stdClass();
 $question7->name = 'If your son/daughter communicated with VLACS personnel, please rate the experience.';
 $question7->type = 'list';
-$question5->required = 0;
-$question7->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
+$question7->list = array('My son/daughter did not communicate with VLACS personnel', 'Excellent', 'Very good', 'Good', 'Fair', 'Poor');
 
 $question8 = new stdClass();
 $question8->name = 'Would you encourage your child to participate in other VLACS courses?';

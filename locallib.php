@@ -435,7 +435,7 @@ function vlags_create_survey_from_surveydata_file() {
                 $item->hasvalue = 1;
                 $itemposition = $itemposition + 1;
                 $item->position = $itemposition;
-                $item->required = empty($question->required) ? 1 : $question->required;
+                $item->required = 1;
                 $DB->insert_record('feedback_item', $item);
             }
         }
