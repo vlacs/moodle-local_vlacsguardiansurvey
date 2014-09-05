@@ -24,7 +24,7 @@ $question2->name = 'I (or another parent/guardian) participated in a monthly voi
 with the instructor and my son/daughter to discuss course progress';
 $question2->comment = 'If you answered \'rarely or never\', please explain';
 $question2->type = 'list';
-$question2->list = array('rarely', 'never');
+$question2->list = array('yes', 'rarely', 'never');
 
 $question3 = new stdClass();
 $question3->name = 'Why did your son/daughter enroll in a VLACS course(s)?';
