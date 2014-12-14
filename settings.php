@@ -11,10 +11,13 @@
 defined('MOODLE_INTERNAL') || die;
 
 $ADMIN->add('root', new admin_category('guardiansurvey', get_string('pluginname', 'local_vlacsguardiansurvey')));
+
+$ADMIN->add('guardiansurvey', new admin_externalpage('vlacsguardiansurveydashboard',
+    get_string('dashboard', 'local_vlacsguardiansurvey'),
+    $CFG->wwwroot."/local/vlacsguardiansurvey/dashboard.php",
+    'moodle/site:config'));
+
 $ADMIN->add('guardiansurvey', new admin_externalpage('vlacsguardiansurveysettings',
     get_string('settings', 'local_vlacsguardiansurvey'),
     $CFG->wwwroot."/local/vlacsguardiansurvey/admin/settings.php",
     'moodle/site:config'));
-
-
-
