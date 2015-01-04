@@ -75,8 +75,8 @@ foreach ($rs as $r) {
     $r->firstnamephonetic = '';
     $teachers[$r->sis_user_idstr] = fullname($r);
 }
-//public function single_select($url, $name, array $options, $selected = '', $nothing = array('' => 'choosedots'), $formid = null) {
-echo $OUTPUT->single_select($selecturl, 'teacher', $teachers, $selected_teacher, array(''=>'Choose an instructor'));
+
+echo $OUTPUT->single_select($selecturl, 'teacher', $teachers, $selected_teacher, array(''=>get_string('chooseinstructor', 'local_vlacsguardiansurvey')));
 
 $sql = "SELECT vc.*
           FROM {vgs_instructor_course} vic
@@ -85,12 +85,11 @@ $sql = "SELECT vc.*
          WHERE vic.sis_user_idstr=?";
 $rs = $DB->get_recordset_sql($sql, array($teacher_idstr));
 $courses = array();
-$courses[] = '';
 foreach ($rs as $r) {
     $courses[$r->master_course_idstr] = $r->name;
 }
 $selecturl->param('teacher', $teacher_idstr);
-echo $OUTPUT->single_select($selecturl, 'course', $courses, $selected_course, array(''=>'Choose a course'));
+echo $OUTPUT->single_select($selecturl, 'course', $courses, $selected_course, array(''=>get_string('choosecourse', 'local_vlacsguardiansurvey')));
 
 if (!empty($selected_teacher) && !empty($selected_course)) {
     $surveylist = new survey_charts($items, $selected_teacher, $selected_course);

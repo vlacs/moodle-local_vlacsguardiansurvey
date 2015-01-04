@@ -296,6 +296,18 @@ function vlacs_get_answer_weight($feedbackitemid, $answerindex) {
     return $score;
 }
 
+function vlacs_get_answer_text($feedbackitemid) {
+    global $CFG, $DB;
+    static $texts = array();
+    $gettextsql = "SELECT vfa.answerindex,vfa.answertext
+                     FROM {vgs_feedback_answers} vfa
+                    WHERE vfa.feedback_item_id=?";
+    if (empty($texts[$feedbackitemid])) {
+        $texts[$feedbackitemid] = $DB->get_records_sql($gettextsql, array($feedbackitemid));
+    }
+    return $texts[$feedbackitemid];
+}
+
 function valcs_generate_teacher_score_weekly() {
     global $DB, $CFG;
     $rs = $DB->get_recordset('vgs_instructor', null, 'firstname');
