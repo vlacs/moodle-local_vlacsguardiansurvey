@@ -77,10 +77,15 @@ class local_vlacsguardiansurvey_renderer extends plugin_renderer_base {
         $strupdate = get_string('editanswerweight', 'local_vlacsguardiansurvey');
         $instructor_idstr = $charts->instructor_idstr;
         $course_idstr = $charts->master_course_idstr;
-        $scores = $DB->get_recordset('vgs_teacher_score', array('sis_user_idstr'=>$instructor_idstr));
         list($count_course, $survey_results_course) = local_vlacsguardiansurvey_analyse_course($course_idstr);
         list($count_vlacs, $survey_results_vlacs) = local_vlacsguardiansurvey_analyse_vlacs($items);
         list($count_teacher, $teacherresults) = local_vlacsguardiansurvey_analyse_teacher($instructor_idstr);
+        // don't show data when response less than 20
+        if ($count_teacher<20) {
+            $scores = array();
+        } else {
+            $scores = $DB->get_recordset('vgs_teacher_score', array('sis_user_idstr'=>$instructor_idstr));
+        }
         $bardata = array();
         $piedata = array();
         foreach ($items as $item) {
