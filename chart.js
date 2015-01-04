@@ -51,8 +51,12 @@ function vlacs_guardian_survey_draw_chart(Y, ids, barData, pieData, lineData) {
                 'containerId': pieChartId,
                 'options': pieChartOptions
             });
-            dashboard.bind(rangeSlider, pieChart);
-            dashboard.draw(google.visualization.arrayToDataTable(vlacs_guardian_survey_piedata[type]));
+            //dashboard.bind(rangeSlider, pieChart);
+            //dashboard.draw(google.visualization.arrayToDataTable(vlacs_guardian_survey_piedata[type]));
+
+            var options = {};
+            var pieChart = new google.visualization.PieChart(document.getElementById(pieChartId));
+            pieChart.draw(google.visualization.arrayToDataTable(vlacs_guardian_survey_piedata[type]), options);
         }
         if (Y.one('#' + pieid)) {
             vlacs_guardian_survey_piedata = pieData[i];
