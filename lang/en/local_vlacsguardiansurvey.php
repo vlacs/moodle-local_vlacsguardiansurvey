@@ -44,7 +44,8 @@ $string['surveyidhelp'] = 'Survey ID (get it from the url)';
 $string['surveylist'] = 'Guardian surveys';
 $string['unallowedtoanswer'] = 'Sorry, you are not allowed to answer this feedback. Click on Continue to go to your survey list.
 Pick the correct survey from the list and answer it again.';
-
+$string['chooseinstructor'] = 'Choose an instructor';
+$string['choosecourse'] = 'Choose a course';
 $string['cronanalyticstask'] = 'Analysing survey results';
 $string['cronsynctask'] = 'Syncing enrolment and course info';
 $string['editanswerweight'] = 'Edit answer weight';

@@ -191,6 +191,8 @@ function local_vlacsreporting_sync_teachers() {
     global $DB, $CFG;
     $url = local_vlacsguardiansurvey_get_sync_url(array('action'=>'export_teachers'));
     $json = file_get_contents($url->out(false));
+    //$filepath = __DIR__ . '/t.json';
+    //$json = file_get_contents($filepath);
     $teachers = json_decode($json);
     foreach($teachers as $t) {
         if($r = $DB->get_record('vgs_instructor', array('sis_user_idstr'=>$t->sis_user_idstr))) {
@@ -211,6 +213,12 @@ function local_vlacsreporting_sync_teachers() {
                     $DB->update_record('vgs_course', $c);
                 } else {
                     $DB->insert_record('vgs_course', $c);
+                }
+                if(!$j = $DB->get_record('vgs_instructor_course', array('sis_user_idstr'=>$t->sis_user_idstr, 'master_course_idstr'=>$c->master_course_idstr))) {
+                    $j = new stdclass;
+                    $j->sis_user_idstr = $t->sis_user_idstr;
+                    $j->master_course_idstr = $c->master_course_idstr;
+                    $DB->insert_record('vgs_instructor_course', $j);
                 }
             }
         }
