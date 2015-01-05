@@ -2,6 +2,7 @@
 
 //define('CLI_SCRIPT', true);
 require_once(dirname(dirname(dirname(__FILE__))) . "/config.php");
+require_login();
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
@@ -9,8 +10,7 @@ function vlacs_export_xls($data) {
     global $CFG, $DB;
     static $questions = array();
     require_once("$CFG->libdir/excellib.class.php");
-    $filename = md5(time());
-    $filename .= clean_filename('-' . gmdate("Ymd_Hi"));
+    $filename = clean_filename('-' . gmdate("Ymd_Hi"));
     $filename .= '.xls';
 
     $filearg = '-';
