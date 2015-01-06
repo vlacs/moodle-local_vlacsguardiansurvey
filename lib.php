@@ -1,9 +1,49 @@
 <?php
 
+/**
+ * Library for the local plugin vlacsguardiansurvey
+ *
+ * @package    local_vlacsguardiansurvey
+ * @copyright  2015 VLA
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Jerome Mouneyrac <jerome@mouneyrac.com>
+ */
 require_once($CFG->libdir.'/filelib.php');
+
+/*
+ * The maximum number of reminder that can be sent.
+ */
+define('MAX_REMINDER', 2);
+
+/*
+ * Number of days between reminder.
+ */
+define('DAYS_BETWEEN_REMINDER', 7);
 
 define('VLACS_SYNC_URL', 'https://courses.vlacs.org/blocks/vlareporting/api.php');
 define('VLACS_SYNC_TOKEN', '51cff780-5409-11e4-88d8-30f9ede8467f');
+
+/**
+ * Cron job for the VLACS guardian survey.
+ * It checks if some reminders need to be sent and send them.
+ */
+function local_vlacsguardiansurvey_cron() {
+    global $DB, $CFG;
+
+    require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
+
+    // Retrieve all guardian surveys that needs a reminder.
+    $sevendaysago = mktime(0, 0, 0, date("m"),   date("d") - DAYS_BETWEEN_REMINDER,   date("Y"));
+    $sqlwhere = "submissionid = 0 AND emailsentdate < :sevendaysago AND
+        ( (remindersentdate IS NULL) OR (remindersentdate < :sevendaysago2 AND remindernumber < :maxremindernumber) )";
+    $guardianstoremind = $DB->get_records_select('guardiansurvey', $sqlwhere,
+        array('sevendaysago' => $sevendaysago, 'sevendaysago2' => $sevendaysago, 'maxremindernumber' => MAX_REMINDER));
+
+    // Sent the reminders.
+    foreach ($guardianstoremind as $guardiansurvey) {
+        vlags_send_reminder_to_guardian($guardiansurvey);
+    }
+}
 
 function local_vlacsguardiansurvey_get_sync_url($params = array()) {
     $params['token'] = sha1(VLACS_SYNC_TOKEN);
@@ -133,10 +173,6 @@ function local_vlacsguardiansurvey_analyse_course($course_idstr) {
         $count++;
     }
     return array($count,$results);
-}
-
-function local_vlacsguardiansurvey_cron() {
-    global $DB, $CFG;
 }
 
 function local_vlacsreporting_sync_feedback_answers() {

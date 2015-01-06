@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/vlacsguardiansurvey/db" VERSION="20150104" COMMENT="XMLDB file for Moodle local/vlacsguardiansurvey plugin"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
->
+<XMLDB PATH="local/vlacsguardiansurvey/db" VERSION="20150106" COMMENT="XMLDB file for Moodle local/vlacsguardiansurvey plugin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
     <TABLE NAME="guardiansurvey" COMMENT="Guardian exit surveys">
       <FIELDS>
@@ -15,6 +12,9 @@
         <FIELD NAME="studentfullname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="the student fullname to be displayed - can be retrieve on the remote site by the enrolment id."/>
         <FIELD NAME="completeddate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="timestamp when the survey was completed - when not completed the field is equal to 0."/>
         <FIELD NAME="emailsentdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="timestamp of the last email sent to the guardian - so the plugin knows if it needs to sent a new email."/>
+        <FIELD NAME="remindersentdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="remindernumber" TYPE="int" LENGTH="4" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="authtoken" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

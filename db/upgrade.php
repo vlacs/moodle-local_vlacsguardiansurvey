@@ -56,6 +56,46 @@ function xmldb_local_vlacsguardiansurvey_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2014073102, 'local', 'vlacsguardiansurvey');
     }
 
+    if ($oldversion < 2015010600) {
+
+        // Define field remindersentdate to be added to guardiansurvey.
+        $table = new xmldb_table('guardiansurvey');
+        $field = new xmldb_field('remindersentdate', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'emailsentdate');
+
+        // Conditionally launch add field remindersentdate.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field remindernumber to be added to guardiansurvey.
+        $table = new xmldb_table('guardiansurvey');
+        $field = new xmldb_field('remindernumber', XMLDB_TYPE_INTEGER, '4', null, null, null, '0', 'remindersentdate');
+
+        // Conditionally launch add field remindernumber.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Local savepoint reached.
+        upgrade_plugin_savepoint(true, 2015010600, 'local', 'vlacsguardiansurvey');
+    }
+
+    if ($oldversion < 2015010601) {
+
+        // Define field authtoken to be added to guardiansurvey.
+        $table = new xmldb_table('guardiansurvey');
+        $field = new xmldb_field('authtoken', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'remindernumber');
+
+        // Conditionally launch add field authtoken.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Local savepoint reached.
+        upgrade_plugin_savepoint(true, 2015010601, 'local', 'vlacsguardiansurvey');
+    }
+
+
 
     if ($oldversion < 2014073115) {
 

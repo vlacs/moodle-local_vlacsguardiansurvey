@@ -158,7 +158,8 @@ function vlags_send_email_to_guardian($surveyrequestinfo) {
     $strparams->studentfullname = $surveyrequestinfo['studentfullname'];
     $strparams->coursefullname = $surveyrequestinfo['coursename'];
     $strparams->guardianfirstname = $surveyrequestinfo['guardianfirstname'];
-    $strparams->surveyurl = $CFG->wwwroot . '/local/vlacsguardiansurvey/index.php';
+    $strparams->guardianlastname = $surveyrequestinfo['guardianlastname'];
+    $strparams->surveyurl = $CFG->wwwroot . '/local/vlacsguardiansurvey/index.php?authtoken=' . vlags_generate_auth_token($surveyrequestinfo);
     $strparams->surveylink = html_writer::link($strparams->surveyurl,
         get_string('guardianemailsurveyname', 'local_vlacsguardiansurvey'));
 
@@ -179,6 +180,125 @@ function vlags_send_email_to_guardian($surveyrequestinfo) {
     // Mark the exit survey as sent to the guardian for the specific enrolment.
     $surveyrequestinfo['emailsentdate'] = time();
     $DB->update_record('guardiansurvey', $surveyrequestinfo);
+}
+
+/**
+ * Sent reminder to guardian.
+ *
+ * @param $surveyrequestinfo
+ */
+function vlags_send_reminder_to_guardian($surveyrequestinfo) {
+    global $CFG, $DB;
+
+    $surveyrequestinfo = (array) $surveyrequestinfo;
+
+    $guardian = $DB->get_record('user', array('id' => $surveyrequestinfo['guardianid']));
+    $userfrom = get_admin();
+
+    $strparams = new stdClass();
+    $strparams->studentfullname = $surveyrequestinfo['studentfullname'];
+    $strparams->coursefullname = $surveyrequestinfo['coursename'];
+    $strparams->guardianlastname = $guardian->lastname;
+    $strparams->guardianfirstname = $guardian->firstname;
+    $strparams->surveyurl = $CFG->wwwroot . '/local/vlacsguardiansurvey/index.php?authtoken=' . vlags_generate_auth_token($surveyrequestinfo);
+    $strparams->surveylink = html_writer::link($strparams->surveyurl,
+        get_string('guardianemailsurveyname', 'local_vlacsguardiansurvey'));
+
+    // The reminder message is different for the first reminder.
+    if ($surveyrequestinfo['remindernumber'] < 1) {
+        $subject = get_string('guardianremindersubject', 'local_vlacsguardiansurvey', $strparams);
+        $messagetext = get_string('guardianremindermessagetext', 'local_vlacsguardiansurvey', $strparams);
+        $messagehtml = get_string('guardianremindermessagehtml', 'local_vlacsguardiansurvey', $strparams);
+    } else {
+        $subject = get_string('guardiansecondremindersubject', 'local_vlacsguardiansurvey', $strparams);
+        $messagetext = get_string('guardiansecondremindermessagetext', 'local_vlacsguardiansurvey', $strparams);
+        $messagehtml = get_string('guardiansecondremindermessagehtml', 'local_vlacsguardiansurvey', $strparams);
+    }
+
+    // Not used yet - maybe VLACS want to add a file or a special email address to reply too.
+    $attachment = '';
+    $attachname = '';
+    $usetrueaddress = true;
+    $replyto = '';
+    $replytoname = '';
+
+    email_to_user($guardian, $userfrom, $subject, $messagetext,
+        $messagehtml, $attachment, $attachname, $usetrueaddress, $replyto, $replytoname);
+
+    // Mark the reminder as sent to the guardian.
+    $surveyrequestinfo['remindersentdate'] = time();
+    $surveyrequestinfo['remindernumber'] = $surveyrequestinfo['remindernumber'] + 1;
+    $DB->update_record('guardiansurvey', $surveyrequestinfo);
+}
+
+/**
+ * Return the auth token from guardian survey info.
+ * If it doesn't exist then it generates the token and assign it to the guardian survey info passed in parameter.
+ * @param $surveyrequestinfo
+ * @return string
+ */
+function vlags_generate_auth_token(&$surveyrequestinfo) {
+
+    // create the auth token if it doesn't exist (it can happen for reminder too that didn't have a token created before the authtoken field was added)
+    if (empty($surveyrequestinfo['authtoken'])) {
+        $surveyrequestinfo['authtoken'] = md5(uniqid(rand(),1));
+    }
+
+    return $surveyrequestinfo['authtoken'];
+}
+
+/**
+ * Automatically log as guardian if we detect the correct auth token.
+ *
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
+function vlags_login_as_guardian() {
+    global $USER, $DB, $CFG, $SESSION;
+
+    // Detect if there is a auth token.
+    if (!empty($SESSION->wantsurl)) {
+        $query = parse_url($SESSION->wantsurl, PHP_URL_QUERY);
+        parse_str($query, $params);
+        if (isset($params['authtoken'])) {
+            $authtoken = $params['authtoken'];
+            clean_param($authtoken, PARAM_ALPHANUM);
+        }
+
+        // Only attempt to login as user if a token is mentionned.
+        if (!empty($authtoken)) {
+            // Retrieve the guardian survey link to the token
+            $guardiansurvey = $DB->get_record('guardiansurvey', array('authtoken' => $authtoken), '*', MUST_EXIST);
+
+            // Check the $USER is not a different user if ever the user is loggedin.
+            if (isloggedin()) {
+                if ($USER->id != $guardiansurvey->guardianid) {
+                    throw new moodle_exception('erroralreadyloggedin', 'local_vlacsguardiansurvey');
+                } else {
+                    // Already logged in so skipped the rest of the function.
+                    return;
+                }
+            }
+
+            // the token must not be referencing an already submitted.
+            // the token must not be 2 month old.
+            $twomonthsago = mktime(0, 0, 0, date("m") - 2, date("d"), date("Y"));
+            if (!empty($guardiansurvey->submissionid) || $guardiansurvey->emailsentdate < $twomonthsago) {
+                throw new moodle_exception('errorcannotaccesssurvey', 'local_vlacsguardiansurvey');
+            }
+
+            // All is good authentication the user as the guardian.
+            $guardianuser = $DB->get_record('user', array('id' => $guardiansurvey->guardianid));
+            complete_user_login($guardianuser);
+
+            // Redirect to the vlaguardiansurvey page.
+            unset($SESSION->wantsurl);
+            redirect($CFG->httpswwwroot . '/local/vlacsguardiansurvey/');
+        }
+
+    }
+
+
 }
 
 function vlags_add_guardian_survey_css() {
