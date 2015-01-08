@@ -40,8 +40,13 @@ function local_vlacsguardiansurvey_cron() {
         array('sevendaysago' => $sevendaysago, 'sevendaysago2' => $sevendaysago, 'maxremindernumber' => MAX_REMINDER));
 
     // Sent the reminders.
-    foreach ($guardianstoremind as $guardiansurvey) {
-        vlags_send_reminder_to_guardian($guardiansurvey);
+    if (!empty($guardianstoremind)) {
+        foreach ($guardianstoremind as $guardiansurvey) {
+            vlags_send_reminder_to_guardian($guardiansurvey);
+        }
+        echo 'We sent ' . count($guardianstoremind) . 'guardian reminders.';
+    } else {
+        echo 'No guardian survey reminder to send.';
     }
 }
 
