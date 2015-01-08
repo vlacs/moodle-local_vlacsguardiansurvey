@@ -264,41 +264,40 @@ function vlags_login_as_guardian() {
             $authtoken = $params['authtoken'];
             clean_param($authtoken, PARAM_ALPHANUM);
         }
-
-        // Only attempt to login as user if a token is mentionned.
-        if (!empty($authtoken)) {
-            // Retrieve the guardian survey link to the token
-            $guardiansurvey = $DB->get_record('guardiansurvey', array('authtoken' => $authtoken), '*', MUST_EXIST);
-
-            // Check the $USER is not a different user if ever the user is loggedin.
-            if (isloggedin()) {
-                if ($USER->id != $guardiansurvey->guardianid) {
-                    throw new moodle_exception('erroralreadyloggedin', 'local_vlacsguardiansurvey');
-                } else {
-                    // Already logged in so skipped the rest of the function.
-                    return;
-                }
-            }
-
-            // the token must not be referencing an already submitted.
-            // the token must not be 2 month old.
-            $twomonthsago = mktime(0, 0, 0, date("m") - 2, date("d"), date("Y"));
-            if (!empty($guardiansurvey->submissionid) || $guardiansurvey->emailsentdate < $twomonthsago) {
-                throw new moodle_exception('errorcannotaccesssurvey', 'local_vlacsguardiansurvey');
-            }
-
-            // All is good authentication the user as the guardian.
-            $guardianuser = $DB->get_record('user', array('id' => $guardiansurvey->guardianid));
-            complete_user_login($guardianuser);
-
-            // Redirect to the vlaguardiansurvey page.
-            unset($SESSION->wantsurl);
-            redirect($CFG->httpswwwroot . '/local/vlacsguardiansurvey/');
-        }
-
+    } else {
+        $authtoken = optional_param('authtoken', null, PARAM_ALPHANUM);
     }
 
+    // Only attempt to login as user if a token is mentionned.
+    if (!empty($authtoken)) {
+        // Retrieve the guardian survey link to the token
+        $guardiansurvey = $DB->get_record('guardiansurvey', array('authtoken' => $authtoken), '*', MUST_EXIST);
 
+        // Check the $USER is not a different user if ever the user is loggedin.
+        if (isloggedin()) {
+            if ($USER->id != $guardiansurvey->guardianid) {
+                throw new moodle_exception('erroralreadyloggedin', 'local_vlacsguardiansurvey');
+            } else {
+                // Already logged in so skipped the rest of the function.
+                return;
+            }
+        }
+
+        // the token must not be referencing an already submitted.
+        // the token must not be 2 month old.
+        $twomonthsago = mktime(0, 0, 0, date("m") - 2, date("d"), date("Y"));
+        if (!empty($guardiansurvey->submissionid) || $guardiansurvey->emailsentdate < $twomonthsago) {
+            throw new moodle_exception('errorcannotaccesssurvey', 'local_vlacsguardiansurvey');
+        }
+
+        // All is good authentication the user as the guardian.
+        $guardianuser = $DB->get_record('user', array('id' => $guardiansurvey->guardianid));
+        complete_user_login($guardianuser);
+
+        // Redirect to the vlaguardiansurvey page.
+        unset($SESSION->wantsurl);
+        redirect($CFG->httpswwwroot . '/local/vlacsguardiansurvey/');
+    }
 }
 
 function vlags_add_guardian_survey_css() {
