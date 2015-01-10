@@ -21,3 +21,8 @@ $ADMIN->add('guardiansurvey', new admin_externalpage('vlacsguardiansurveysetting
     get_string('settings', 'local_vlacsguardiansurvey'),
     $CFG->wwwroot."/local/vlacsguardiansurvey/admin/settings.php",
     'moodle/site:config'));
+
+$ADMIN->add('guardiansurvey', new admin_externalpage('vlacsguardiansurveyexport',
+    get_string('export', 'local_vlacsguardiansurvey'),
+    $CFG->wwwroot."/local/vlacsguardiansurvey/export.php",
+    'moodle/site:config'));

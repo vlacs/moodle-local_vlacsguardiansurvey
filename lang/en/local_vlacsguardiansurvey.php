@@ -28,6 +28,7 @@ $string['errorcannotaccesssurvey'] = 'You can not access this survey because eit
 To check your list of available surveys you can manually log in https://survey27.vlacs.org/local/vlacsguardiansurvey';
 $string['erroralreadyloggedin'] = 'Someone else is already logged in Moodle please logout first and click again on the email link.';
 $string['errorobsoleteperiod'] = 'The obsolete period must be higer than 0.';
+$string['export'] = 'Export';
 $string['guardianemailmessagetext'] = 'Dear Mr. or Ms. {$a->guardianlastname}:
 
 At the conclusion of each VLACS course, we send a survey to parents or guardians asking for
