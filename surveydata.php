@@ -20,11 +20,10 @@ $question1->comment = 'If you answered \'no\', please explain';
 $question1->type = 'yesno';
 
 $question2 = new stdClass();
-$question2->name = 'I (or another parent/guardian) participated in a monthly voice call
-with the instructor and my son/daughter to discuss course progress';
+$question2->name = 'I (or another parent/guardian) participated in a monthly voice call with the instructor and my son/daughter to discuss course progress';
 $question2->comment = 'If you answered \'rarely or never\', please explain';
 $question2->type = 'list';
-$question2->list = array('yes', 'rarely', 'never');
+$question2->list = array('yes, every month', 'almost every month', 'rarely', 'never');
 
 $question3 = new stdClass();
 $question3->name = 'Why did your son/daughter enroll in a VLACS course(s)?';
@@ -65,10 +64,13 @@ $question9->name = 'Would you recommend VLACS to other parents?';
 $question9->type = 'yesno';
 
 $question10 = new stdClass();
-$question10->name = 'My son\'s/daughter\'s experience regarding technical issues associated with VLACS applications
-(e.g., online course material, online classroom,VLACS communicator, dead links within courses Adobe Connect, etc.)';
+$question10->name = 'My son\'s/daughter\'s experience regarding technical issues associated with VLACS applications (e.g., online course material, online classroom,VLACS communicator, dead links within courses Adobe Connect, etc.)';
 $question10->type = 'list';
-$question10->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
+$question10->list = array(
+    'Never had technical problems',
+    'Sometimes had technical problems',
+    'Often had technical problems',
+    'Often had a great deal of technical problems');
 
 $question11 = new stdClass();
 $question11->name = 'Most questions related to technical issues were answered';
@@ -83,12 +85,12 @@ $question12->list = array('Strongly agree', 'Agree', 'Neither agree or disagree'
 $question13 = new stdClass();
 $question13->name = 'Overall, communication with my son\'s daughter\'s instructor was';
 $question13->type = 'list';
-$question13->list = array('Excellent', 'Very good', 'Good', 'Fair', 'Poor');
+$question13->list = array('Excellent', 'Good', 'Fair', 'Poor');
 
 $question14 = new stdClass();
 $question14->name = 'My son\'s/daughter\'s instructor was helpful and encouraging, bringing out the best in him/her';
 $question14->type = 'list';
-$question14->list = array('Strongly agree', 'Agree', 'Neither agree or disagree', 'Disagree', 'Strongly disagree');
+$question14->list = array('Strongly agree', 'Agree', 'Disagree Agree', 'Strongly disagree');
 
 $question15 = new stdClass();
 $question15->name = 'Please comment on the quality of your experience with the course instructor or VLACS instructors
@@ -106,14 +108,14 @@ $question17->type = 'yesno';
 $question18 = new stdClass();
 $question18->name = 'My son\'s/daughter\'s instructor was knowledgeable about the course and subject';
 $question18->type = 'list';
-$question18->list = array('Strongly agree', 'Agree', 'Neither agree or disagree', 'Disagree', 'Strongly disagree');
+$question18->list = array('Strongly agree', 'Agree', 'Disagree', 'Strongly disagree');
 
 $question19 = new stdClass();
-$question19->name = 'My son/daughter has completed acourse at a public or private middle school or high school,
+$question19->name = 'My son/daughter has completed a course at a public or private middle school or high school,
 and the difficulties or challenges of this VLACS course was';
 $question19->type = 'list';
-$question19->list = array('Much harder', 'Harder', 'Same', 'Somewhat easier', 'Much easier',
-    'hasn\'t taken a course at a public or private school');
+$question19->list = array('Much harder', 'Somewhat harder', 'The same', 'Somewhat easier', 'Much easier',
+    'Hasn\'t taken a course at a public or private school');
 
 $question20 = new stdClass();
 $question20->name = 'Please estimate the hours per week that your son/daughter spent working on his/her course was
