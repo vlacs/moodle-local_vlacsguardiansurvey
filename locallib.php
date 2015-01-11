@@ -667,3 +667,36 @@ function local_process_data() {
     return $data;
 }
 
+
+function local_vlacs_backup_stats_data() {
+    global $DB, $CFG;
+
+    $backupdir = $CFG->dataroot . '/vlacs/backup';
+    if (!file_exists($backupdir)) {
+        mkdir($backupdir, $CFG->directorypermissions, true);
+    }
+    $records = $DB->get_records('vgs_teacher_score');
+    $fileteacherscore = $backupdir . '/teacher_score.json';
+    file_put_contents($fileteacherscore, json_encode($records));
+
+    $records = $DB->get_records('vgs_feedback_answers');
+    $filefeedbackanswers = $backupdir . '/feedbackanswers.json';
+    file_put_contents($filefeedbackanswers, json_encode($records));
+
+    $records = $DB->get_records('feedback_completed');
+    $filename = $backupdir . '/feedback_completed.json';
+    file_put_contents($filename, json_encode($records));
+
+    $records = $DB->get_records('feedback_item');
+    $filename = $backupdir . '/feedback_item.json';
+    file_put_contents($filename, json_encode($records));
+
+    $records = $DB->get_records('feedback_tracking');
+    $filename = $backupdir . '/feedback_tracking.json';
+    file_put_contents($filename, json_encode($records));
+
+    $records = $DB->get_records('feedback_value');
+    $filename = $backupdir . '/feedback_value.json';
+    file_put_contents($filename, json_encode($records));
+    return true;
+}
