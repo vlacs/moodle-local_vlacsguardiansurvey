@@ -30,6 +30,10 @@ define('VLACS_SYNC_TOKEN', '51cff780-5409-11e4-88d8-30f9ede8467f');
 function local_vlacsguardiansurvey_cron() {
     global $DB, $CFG;
 
+    if (!empty($CFG->maintenance_enabled)) {
+        return;
+    }
+
     require_once($CFG->dirroot . '/local/vlacsguardiansurvey/locallib.php');
 
     // Retrieve all guardian surveys that needs a reminder.
