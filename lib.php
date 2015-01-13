@@ -38,10 +38,12 @@ function local_vlacsguardiansurvey_cron() {
 
     // Retrieve all guardian surveys that needs a reminder.
     $sevendaysago = mktime(0, 0, 0, date("m"),   date("d") - DAYS_BETWEEN_REMINDER,   date("Y"));
-    $sqlwhere = "submissionid = 0 AND emailsentdate < :sevendaysago AND
+    $twomonthsago = mktime(0, 0, 0, date("m") - 2,   date("d"),   date("Y"));
+    $sqlwhere = "submissionid = 0 AND emailsentdate < :sevendaysago AND enrolmentcompleteddate > :twomonthsago AND
         ( (remindersentdate IS NULL) OR (remindersentdate < :sevendaysago2 AND remindernumber < :maxremindernumber) )";
     $guardianstoremind = $DB->get_records_select('guardiansurvey', $sqlwhere,
-        array('sevendaysago' => $sevendaysago, 'sevendaysago2' => $sevendaysago, 'maxremindernumber' => MAX_REMINDER));
+        array('sevendaysago' => $sevendaysago, 'twomonthsago' => $twomonthsago,
+              'sevendaysago2' => $sevendaysago, 'maxremindernumber' => MAX_REMINDER));
 
     // Sent the reminders.
     if (!empty($guardianstoremind)) {
