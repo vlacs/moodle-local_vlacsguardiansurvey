@@ -152,6 +152,13 @@ function vlags_send_email_to_guardian($surveyrequestinfo) {
     global $CFG, $DB;
 
     $guardian = $DB->get_record('user', array('username' => $surveyrequestinfo['guardianusername']));
+
+    // Hack to ignore guardians who requested to not received any email anymore about the guardian survey.
+    // List of guardian currently bypassed: jbruno4.
+    if ($guardian->id == 76686 ) {
+        return '';
+    }
+
     $userfrom = get_admin();
 
     $strparams = new stdClass();
@@ -193,6 +200,13 @@ function vlags_send_reminder_to_guardian($surveyrequestinfo) {
     $surveyrequestinfo = (array) $surveyrequestinfo;
 
     $guardian = $DB->get_record('user', array('id' => $surveyrequestinfo['guardianid']));
+
+    // Hack to ignore guardians who requested to not received any email anymore about the guardian survey.
+    // List of guardian currently bypassed: jbruno4.
+    if ($guardian->id == 76686 ) {
+        return '';
+    }
+
     $userfrom = get_admin();
 
     $strparams = new stdClass();
