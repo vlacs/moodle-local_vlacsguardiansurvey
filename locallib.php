@@ -314,7 +314,7 @@ function vlags_login_as_guardian() {
     }
 
     // Detect if the user is not logged, and in this case redirect to saml20 login page.
-    if (!isloggedin()) {
+    if (is_enabled_auth('vlasaml20') and !isloggedin()) {
         redirect($CFG->httpswwwroot . '/auth/vlasaml20/login.php');
     }
 }

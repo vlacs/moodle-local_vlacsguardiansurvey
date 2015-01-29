@@ -18,7 +18,7 @@ The VLACS survey is using the Moodle Feedback module, not the Moodle Survey modu
 10. check that all works. User has been created, enrolled into the new course. In the Moodle admin edit the user change the auth method for manual and change the password. Connect as this user and go to http://survey27.vlacs.org/local/vlacsguardiansurvey/. You should be able to answer the survey.
 11. you can now delete the test guardian user from the Moodle admin and manually delete the enrolment created in guardiansurvey table in the DB.
 12. set a new token on the survey site, and set $CFG->survey2_token and $CFG->survey2_url in vla prod config.php
-
+13. you must setup saml20 without the alternateloginurl setting. You can change this setting in locallib at the end of the vlags_login_as_guardian() function.
 
 ### Theme modification
 In order to add specific enrolment survey information on the survey pages,
